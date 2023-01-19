@@ -70,17 +70,14 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.PRO_VALIDADE)
                 </td>
-                <td>
-                    @*@Html.DisplayFor(modelItem => item.PRO_STATUS, (item.PRO_STATUS ? "a" : "b"))*@
-
+                <td>                   
                     @if (item.PRO_STATUS)
                     {
-                               
-                        <label class="badge-success">Vendido</label>
+                        <span title="Vendido" class="badge bg-success">Vendido</span>                         
                     }
                     else
                     {
-                         <label class="badge-info">Em Estoque</label>
+                        <span title="Em Estoque" class="badge bg-info">Em Estoque</span>    
                     }
                    
                 </td>

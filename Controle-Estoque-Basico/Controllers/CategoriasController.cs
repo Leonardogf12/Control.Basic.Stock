@@ -29,7 +29,7 @@ namespace Controle_Estoque_Basico.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categoria.Where(x=>x.CAT_ISDELETED == false).ToListAsync());
+            return View(await _context.Categoria.Where(x => x.CAT_ISDELETED == false).ToListAsync());
         }
 
         public async Task<IActionResult> ListaProdutosPartialAsync()
@@ -106,12 +106,12 @@ namespace Controle_Estoque_Basico.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                   
-                     await _repCat.Salvar(categoria);
+
+                    await _repCat.Salvar(categoria);
 
                     //_context.Add(categoria);
                     //await _context.SaveChangesAsync();
-                    
+
                     return RedirectToAction(nameof(Index));
                 }
                 return View(categoria);
@@ -125,7 +125,7 @@ namespace Controle_Estoque_Basico.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CAT_ID,CAT_NOME,CAT_ISDELETED")] Categoria categoria)
+        public async Task<IActionResult> Edit(int id, [Bind("CAT_ID,CAT_NOME,CAT_DESCRICAO,CAT_ISDELETED")] Categoria categoria)
         {
             if (id != categoria.CAT_ID)
             {
@@ -202,8 +202,18 @@ namespace Controle_Estoque_Basico.Controllers
                     var categoria = await _context.Categoria.FindAsync(aRegistros[i]);
 
                     if (categoria != null)
-                        categoria.CAT_ISDELETED = true;
-                    
+                    {
+                        List<Produto> produtos = await _context.Produto.Where(x => x.PRO_IDCATEGORIA == categoria.CAT_ID
+                                                                        && x.PRO_ISDELETED == false).ToListAsync();     
+                        
+                        if(produtos.Count() > 0)
+                        {
+                            Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                            return Json("Não é possível excluir esta categoria pois ela possui produtos vinculados. Favor verificar.");
+                        }
+                    }
+
+                    categoria.CAT_ISDELETED = true;                    
                     await _context.SaveChangesAsync();
                 }
 

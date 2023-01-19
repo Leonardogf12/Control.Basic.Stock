@@ -23,6 +23,11 @@ namespace Controle_Estoque_Basico.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("CAT_DESCRICAO")
+                        .IsRequired()
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
+                        .HasMaxLength(200);
+
                     b.Property<bool>("CAT_ISDELETED")
                         .HasColumnType("tinyint(1)");
 

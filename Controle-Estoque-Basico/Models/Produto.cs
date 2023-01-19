@@ -17,7 +17,7 @@ namespace Controle_Estoque_Basico.Models
         [Display(Name = "Descrição")]               
         public string PRO_DESCRICAO { get; set; }
 
-        [Display(Name = "Quantidade", Description = "Digite um valor valido")]
+        [Display(Name = "Quantidade UN", Description = "Digite um valor valido")]
         [Column(TypeName = "decimal(18, 3)")]
         public decimal PRO_QUANTIDADE { get; set; }
 

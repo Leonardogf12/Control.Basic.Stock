@@ -1,5 +1,4 @@
 ﻿
-
 $(document).ready(function () {
 
     CriaDataTableCategorias();
@@ -7,18 +6,14 @@ $(document).ready(function () {
 
 function CriaDataTableCategorias() {
 
-    $("#dtCategorias").DataTable({               
-       /* "paging": true,
-        'searching': true,
-        'ordering': true,*/
+    $("#dtCategorias").DataTable({
+        "responsive": true,
         "lengthChange": true,
         "autoWidth": true,
-        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],       
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
         'lengthMenu': [[10, 20, 30, 40, -1], [10, 20, 30, 40, "Todos"]],
         columnDefs: [
             { width: 10, targets: 0 },
-            { width: 100, targets: 1 },
-            { width: 100, targets: 2 },
         ],
         "language": {
             "buttons": {
@@ -52,7 +47,7 @@ function CriaDataTableCategorias() {
                 "sSortDescending": ": Ativar para ordenar a coluna de maneira crescente"
             },
         },
-    }).buttons().container().appendTo('#dtProdutos_wrapper .col-md-6:eq(0)');
+    }).buttons().container().appendTo('#dtCategorias_wrapper .col-md-6:eq(0)');
 }
 
 $('#mycheck').on('ifClicked', function (event) { checkAll(); });
@@ -76,11 +71,31 @@ function checkAll() {
     }
 }
 
-function ExcluirCategoriasPartial(id) {
-    ExcluirVarios(id);
+//* FUNCAO DO BOTAO EXCLUIR DA INDEX.
+function ExcluirCategoriasIndex() {
+
+    Swal.fire({
+        icon: 'question',
+        title: 'Excluir',
+        text: 'Deseja realmente excluir este(s) registro(s)?',
+        showCancelButton: true,
+        confirmButtonColor: '#36c6d3',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Confirmar',
+        footer: '<p>Obs: Não será possível recuperar um registro excluído.</label>'
+    }).then(function (result) {
+        if (result.value) {
+
+            ConfirmaExcluir();
+        }
+
+    });
 }
 
-function ExcluirProdutosIndex() {
+//* VERIFICA SE EXISTE ITEMS CHECKADOS/MARCADOS NA LISTA PARA EXCLUIR.
+function ConfirmaExcluir() {
+
     var checkboxes = document.getElementsByName('LISTACHECK');
 
     var registro = '';
@@ -92,13 +107,46 @@ function ExcluirProdutosIndex() {
     }
 
     if (registro == '') {
-        ToastCustom(1, "error", "Selecione ao menos um registro.");
+
+        swal.fire({
+            icon: 'info',
+            title: "Atenção",
+            text: 'Selecione ao menos um registro.',
+            showCancelButton: true,
+            showConfirmButton: false,
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Fechar'
+        });
 
     } else {
         ExcluirVarios(registro)
     }
 }
 
+//* FUNCAO DO BOTAO EXCLUIR DA ListaCategoriasPatial.
+function ExcluirCategoriasPartial(id) {
+
+    Swal.fire({
+        icon: 'question',
+        title: 'Excluir',
+        text: 'Deseja realmente excluir este(s) registro(s)?',
+        showCancelButton: true,
+        confirmButtonColor: '#36c6d3',        
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Confirmar',
+        footer: '<p>Obs: Não será possível recuperar um registro excluído.</label>'
+    }).then(function (result) {
+        if (result.value) {
+
+            ExcluirVarios(id);
+        }      
+
+    });
+
+}
+
+//* FUNCAO PARA CHAMAR CONTROLLER.
 function ExcluirVarios(registro) {
     var url = "/Categorias/ExcluirVarios/";
 
@@ -111,26 +159,33 @@ function ExcluirVarios(registro) {
         },
         success: function (data) {
 
-            ToastCustom(1, "success", "Categoria excluida com sucesso");
-
-            //2nd empty html
-            //$("#dtProdutos" + " tbody").empty();
-            //$("#dtProdutos" + " thead").empty();
-
-
             
-            //var table = $("#dtProdutos").DataTable();
-
             $("#listaCategoriasRegistros").html('');
             $("#listaCategoriasRegistros").html(data);
-            //CriaDataTableProdutos();
-           
+            
 
-            //document.location.reload(true);
+            Swal.fire({                
+                icon: 'success',
+                title: '<h3>Sucesso</h3>',
+                text: 'Registro excluído com sucesso.',
+                showConfirmButton: false,
+                timer: 2000
+            });
+
         },
         error: function (data) {
 
-            ToastCustom(1, "error", data.responseText);
+            swal.fire({
+                icon: 'error',
+                title: "Excluir",              
+                text: data.responseJSON,
+                showCancelButton: true,
+                showConfirmButton: false,
+                cancelButtonColor: '#d33',               
+                cancelButtonText: 'Fechar'
+            });
+
+            //ToastCustom(1, "error", data.responseText);
         }
     });
 }
@@ -201,5 +256,3 @@ function ToastCustom(modelo, tipo, mensagem) {
     }
 
 }
-
-

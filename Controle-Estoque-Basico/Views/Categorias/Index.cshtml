@@ -5,7 +5,7 @@
 }
 
 <div class="content-wrapper">
-     
+
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-12">
@@ -16,7 +16,7 @@
         </div>
     </section>
 
-      <div class="content">
+    <div class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
@@ -24,7 +24,7 @@
                         <div class="card-body">
                             <div class="btn-group">
                                 <a asp-action="Create" class="btn bg-gradient-primary">Nova Categoria</a>
-                                <a class="btn bg-gradient-danger" onclick="ExcluirCategoriasIndex()">Excluir</a>
+                                <a class="btn bg-gradient-danger" onclick="ExcluirCategoriasIndex()">Excluir</a>                                                                                           
                             </div>
                         </div>
                     </div>
@@ -34,8 +34,8 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-body" id="listaCategoriasRegistros">                            
-                            <partial name="ListaCategoriasPartial" model="Model" />  
+                        <div class="card-body" id="listaCategoriasRegistros">
+                            <partial name="ListaCategoriasPartial" model="Model" />
                         </div>
                     </div>
                 </div>
@@ -44,6 +44,10 @@
         </div>
     </div>
 </div>
+
+
+@await Html.PartialAsync("Componentes/ModalConfirmaDeletar")
+
 
 <script src="~/theme/plugins/jquery/jquery.min.js"></script>
 <script src="~/ViewsJs/CategoriasJs/Categorias.js"></script>

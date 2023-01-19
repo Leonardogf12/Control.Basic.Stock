@@ -7,12 +7,10 @@ $(document).ready(function () {
 
 function CriaDataTableProdutos() {
 
-    $("#dtProdutos").DataTable({               
-       /* "paging": true,
-        'searching': true,
-        'ordering': true,*/
+    $("#dtProdutos").DataTable({                   
+        "responsive":true,
         "lengthChange": true,
-        "autoWidth": true,
+        "autoWidth": true,         
         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],       
         'lengthMenu': [[10, 20, 30, 40, -1], [10, 20, 30, 40, "Todos"]],
         columnDefs: [

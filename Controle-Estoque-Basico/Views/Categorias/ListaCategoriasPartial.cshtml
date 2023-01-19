@@ -2,6 +2,7 @@
 
 <script src="~/theme/plugins/jquery/jquery.min.js"></script>
 
+
 <table id="dtCategorias" class="table table-hover">
     <thead>
         <tr>
@@ -15,7 +16,11 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CAT_NOME)
-            </th>         
+            </th>     
+             <th>
+                @Html.DisplayNameFor(model => model.CAT_DESCRICAO)
+            </th>   
+       
             <th>Ações</th>
         </tr>
     </thead>
@@ -31,9 +36,13 @@
                         </label>
                     </div>
                 </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.CAT_NOME)
-                </td>
+                </td>  
+                 <td>
+                    @Html.DisplayFor(modelItem => item.CAT_DESCRICAO)
+                </td>  
               
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.CAT_ID">  <i class="fas fa-edit"></i></a> &nbsp;
