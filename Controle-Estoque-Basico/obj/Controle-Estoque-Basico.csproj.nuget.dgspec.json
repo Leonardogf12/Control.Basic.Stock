@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\PROJETOS\\Controle-Estoque-Basico\\ControlBasicStock\\Controle-Estoque-Basico\\Controle-Estoque-Basico.csproj": {}
+    "D:\\PROJETOS\\Control.Basic.Stock\\Controle-Estoque-Basico\\Controle-Estoque-Basico.csproj": {}
   },
   "projects": {
-    "D:\\PROJETOS\\Controle-Estoque-Basico\\ControlBasicStock\\Controle-Estoque-Basico\\Controle-Estoque-Basico.csproj": {
+    "D:\\PROJETOS\\Control.Basic.Stock\\Controle-Estoque-Basico\\Controle-Estoque-Basico.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\PROJETOS\\Controle-Estoque-Basico\\ControlBasicStock\\Controle-Estoque-Basico\\Controle-Estoque-Basico.csproj",
+        "projectUniqueName": "D:\\PROJETOS\\Control.Basic.Stock\\Controle-Estoque-Basico\\Controle-Estoque-Basico.csproj",
         "projectName": "Controle-Estoque-Basico",
-        "projectPath": "D:\\PROJETOS\\Controle-Estoque-Basico\\ControlBasicStock\\Controle-Estoque-Basico\\Controle-Estoque-Basico.csproj",
+        "projectPath": "D:\\PROJETOS\\Control.Basic.Stock\\Controle-Estoque-Basico\\Controle-Estoque-Basico.csproj",
         "packagesPath": "C:\\Users\\root\\.nuget\\packages\\",
-        "outputPath": "D:\\PROJETOS\\Controle-Estoque-Basico\\ControlBasicStock\\Controle-Estoque-Basico\\obj\\",
+        "outputPath": "D:\\PROJETOS\\Control.Basic.Stock\\Controle-Estoque-Basico\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

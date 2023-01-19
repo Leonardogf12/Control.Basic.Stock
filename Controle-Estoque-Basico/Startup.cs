@@ -12,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using Controle_Estoque_Basico.Data;
 using Controle_Estoque_Basico.Interfaces;
 using Controle_Estoque_Basico.Repositorios;
-using Controle_Estoque_Basico.Services;
 
 namespace Controle_Estoque_Basico
 {
@@ -39,8 +38,7 @@ namespace Controle_Estoque_Basico
 
             //*INJECAO DE DEPENDENCIAS
             services.AddScoped<AppDbContext>();
-            services.AddScoped<ICategoriasRepositorio, CategoriasRepositorio>();
-            services.AddScoped<CategoriasService>();
+            services.AddScoped<ICategoriasRepositorio, CategoriasRepositorio>();   
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

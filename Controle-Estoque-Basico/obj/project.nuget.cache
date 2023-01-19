@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KlDMlB8yfjvF1hy9ZXCN/04XlLQ1MIDE/g/3fbW4WrjMb9YIGMwb/Z2F20vhR9ZYYEJLmEO3LixUjMa4Fk91xA==",
+  "dgSpecHash": "Gcsi26ys2RSM0pHyxmkaKWtWJmQFqKsEJ+DzvfxeO5HoNxs1ENLLhmOfAZt553ORts3SquusDo/HnGYQ135Mxw==",
   "success": true,
-  "projectFilePath": "D:\\PROJETOS\\Controle-Estoque-Basico\\ControlBasicStock\\Controle-Estoque-Basico\\Controle-Estoque-Basico.csproj",
+  "projectFilePath": "D:\\PROJETOS\\Control.Basic.Stock\\Controle-Estoque-Basico\\Controle-Estoque-Basico.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\root\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\root\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.extensions\\3.1.0\\microsoft.aspnetcore.mvc.razor.extensions.3.1.0.nupkg.sha512",

@@ -9,19 +9,19 @@ using Controle_Estoque_Basico.Data;
 using Controle_Estoque_Basico.Models;
 using Microsoft.AspNetCore.Http;
 using Controle_Estoque_Basico.ViewModels;
-using Controle_Estoque_Basico.Services;
+using Controle_Estoque_Basico.Interfaces;
 
 namespace Controle_Estoque_Basico.Controllers
 {
     public class ProdutosController : Controller
     {
-        private readonly AppDbContext _context;
-        public readonly CategoriasService _categoriasService;
+        private readonly AppDbContext _context;        
+        private readonly ICategoriasRepositorio _repCat;
 
-        public ProdutosController(AppDbContext context, CategoriasService categoriasService)
+        public ProdutosController(AppDbContext context, ICategoriasRepositorio repCat)
         {
             _context = context;
-            _categoriasService = categoriasService;
+            _repCat = repCat;
         }
 
         #region GETS
@@ -59,7 +59,7 @@ namespace Controle_Estoque_Basico.Controllers
         public async Task<IActionResult> Create()
         {
 
-            List<Categoria> categorias = await _categoriasService.BuscaCategorias();
+            List<Categoria> categorias = await _repCat.BuscaCategorias();
             var vm = new ProdutosViewModel { Categorias = categorias };
 
             return View(vm);
