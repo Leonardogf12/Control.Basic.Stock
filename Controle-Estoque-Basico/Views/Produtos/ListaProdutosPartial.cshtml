@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Controle_Estoque_Basico.Models.Produto>
+
+<script src="~/theme/plugins/jquery/jquery.min.js"></script>
+
+<table id="dtProdutos" class="table table-hover">
+    <thead>
+        <tr>
+            <th class="p-4">
+                <div class="form-check">
+                    <label class="form-check-label p-2">
+                        <input class="form-check-input" type="checkbox" id="checkAll">
+                        <span class="form-check-sign"></span>
+                    </label>
+                </div>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria.CAT_NOME)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PRO_NOME)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.PRO_DESCRICAO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PRO_QUANTIDADE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PRO_DATAENTRADA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PRO_VALIDADE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PRO_STATUS)
+            </th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-left">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" id="@item.PRO_ID" name="LISTACHECK">
+                            <span class="form-check-sign"></span>
+                        </label>
+                    </div>
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoria.CAT_NOME)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PRO_NOME)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.PRO_DESCRICAO)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PRO_QUANTIDADE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PRO_DATAENTRADA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PRO_VALIDADE)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.PRO_STATUS, (item.PRO_STATUS ? "a" : "b"))*@
+
+                    @if (item.PRO_STATUS)
+                    {
+                               
+                        <label class="badge-success">Vendido</label>
+                    }
+                    else
+                    {
+                         <label class="badge-info">Em Estoque</label>
+                    }
+                   
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.PRO_ID">  <i class="fas fa-edit"></i></a> &nbsp;
+                    <a asp-action="Details" asp-route-id="@item.PRO_ID"><i class="fas fa-search"></i></a> &nbsp;
+                    <a class="btn-md" onclick="ExcluirProdutosPartial(@item.PRO_ID)"> <i class="fas fa-trash"></i></a> &nbsp;
+                    <a class="btn-md" onclick="InformarVenda(@item.PRO_ID)"> <i class="fa fa-check-circle"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

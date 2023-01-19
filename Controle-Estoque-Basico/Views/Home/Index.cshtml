@@ -1,0 +1,165 @@
+﻿@model IEnumerable<Controle_Estoque_Basico.Models.Produto>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Dashboard</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+
+                @* QUANTIDADE DE PRODUTOS NO ESTOQUE *@
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3 id="quantidadeProdutos"></h3>
+                            <p>Produtos</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-bag"></i>
+                        </div>
+                        <a asp-area="" asp-controller="Produtos" asp-action="Index" class="small-box-footer">Sobre <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                @* QUANTIDADE DE PRODUTOS NO ESTOQUE FIM *@
+
+                @* QUANTIDADE DE CATEGORIAS *@
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3 id="quantidadeCategorias"></h3>
+                            <p>Categorias</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-bag"></i>
+                        </div>
+                        <a asp-area="" asp-controller="Categorias" asp-action="Index" class="small-box-footer">Sobre <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                @* QUANTIDADE DE CATEGORIAS FIM *@
+
+                @* SAIDA DE PRODUTOS *@
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3 id="quantidadeSaidaProdutos"></h3>
+                            <p>Saída</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-bag"></i>
+                        </div>
+                        <a asp-area="" asp-controller="SaidaProdurtos" asp-action="Index" class="small-box-footer">Sobre<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                @* SAIDA DE PRODUTOS FIM *@
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3>65</h3>
+
+                            <p>Á vencer</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">Sobre <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<script src="~/theme/plugins/jquery/jquery.min.js"></script>
+
+<script>
+
+    $(document).ready(function() {
+        CarregaQuantidadeEtoque();
+        CarregaQuantidadeCategoria();
+        CarregaQuantidadeSaidaProdutos();
+    });
+
+    function CarregaQuantidadeEtoque() {
+
+        //CARD 1
+        $.ajax({
+            url: '/Produtos/TotalProdutosEmEstoque/',
+            type: 'GET',
+            datatype: 'JSON',
+            beforeSend: function() {
+            },
+            success: function(data) {
+
+                $("#quantidadeProdutos").html(data);
+            },
+            error: function(data) {
+
+                ToastCustom("error", data.responseText);
+            }
+        });
+    }
+
+    function CarregaQuantidadeCategoria() {
+
+        //CARD 2
+        $.ajax({
+            url: '/Categorias/TotalCategorias/',
+            type: 'GET',
+            datatype: 'JSON',
+            beforeSend: function() {
+            },
+            success: function(data) {
+
+                $("#quantidadeCategorias").html(data);
+            },
+            error: function(data) {
+
+                ToastCustom("error", data.responseText);
+            }
+        });
+    }
+
+    function CarregaQuantidadeSaidaProdutos() {
+        //CARD 2
+        $.ajax({
+            url: '/SaidaProdutos/TotalSaidaProdutos/',
+            type: 'GET',
+            datatype: 'JSON',
+            beforeSend: function() {
+            },
+            success: function(data) {
+               
+                $("#quantidadeSaidaProdutos").html(data);
+            },
+            error: function(data) {
+
+                ToastCustom("error", data.responseText);
+            }
+        });
+    }
+
+</script>

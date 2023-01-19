@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Controle_Estoque_Basico.Models.Categoria>
+
+@{
+    ViewData["Title"] = "Categorias";
+}
+
+<div class="content-wrapper">
+     
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-12">
+                <div class="col-sm-12">
+                    <h1 class="text-center">@ViewData["Title"]</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+      <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="btn-group">
+                                <a asp-action="Create" class="btn bg-gradient-primary">Nova Categoria</a>
+                                <a class="btn bg-gradient-danger" onclick="ExcluirCategoriasIndex()">Excluir</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body" id="listaCategoriasRegistros">                            
+                            <partial name="ListaCategoriasPartial" model="Model" />  
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/theme/plugins/jquery/jquery.min.js"></script>
+<script src="~/ViewsJs/CategoriasJs/Categorias.js"></script>

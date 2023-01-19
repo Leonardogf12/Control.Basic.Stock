@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Controle_Estoque_Basico.Models.Produto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PRO_NOME)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PRO_DESCRICAO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PRO_QUANTIDADE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PRO_DATAENTRADA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PRO_VALIDADE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PRO_STATUS)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PRO_NOME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PRO_DESCRICAO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PRO_QUANTIDADE)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PRO_DATAENTRADA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PRO_VALIDADE)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PRO_STATUS)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categoria.CAT_NOME)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PRO_ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PRO_ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PRO_ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
