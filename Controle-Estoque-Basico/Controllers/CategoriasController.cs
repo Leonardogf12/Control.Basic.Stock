@@ -209,7 +209,7 @@ namespace Controle_Estoque_Basico.Controllers
                         if(produtos.Count() > 0)
                         {
                             Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
-                            return Json("Não é possível excluir esta categoria pois ela possui produtos vinculados. Favor verificar.");
+                            return Json($"Não foi possível excluir a categoria {categoria.CAT_NOME}. Existe um ou mais produtos vinculados a esta categoria. Favor verificar.");
                         }
                     }
 

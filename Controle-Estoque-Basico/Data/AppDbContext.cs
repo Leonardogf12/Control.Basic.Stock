@@ -16,5 +16,6 @@ namespace Controle_Estoque_Basico.Data
 
         public DbSet<Produto> Produto { get; set; }
         public DbSet<Categoria> Categoria { get; set; }
+        public DbSet<SaidaProduto> SaidaProduto { get; set; }
     }
 }

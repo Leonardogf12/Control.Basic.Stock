@@ -1,0 +1,66 @@
+﻿<div class="modal fade" id="modal-default-ModalBaixaProdutos">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Baixar Produto</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row p-1">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <label for="exampleFormControlInput1" class="form-label">Quantidade a ser baixada:</label>
+                            <input type="number" class="form-control" id="qtdProduto" placeholder="0">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="TesteBaixaProduto()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var idProduto = 0;
+
+    function ShowModalBaixaProdutos(id) {
+        $("#modal-default-ModalBaixaProdutos").modal('show');
+
+        idProduto = id;
+    }
+
+    function TesteBaixaProduto() {
+
+        var url = "/SaidaProdutos/InformarBaixaProduto";
+        var qtd = $("#qtdProduto").val();
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            datatype: 'JSON',
+            data: { _id: idProduto, _qtd: qtd },
+            beforeSend: function() {
+            },
+            success: function(data) {
+
+                ToastCustom(1, "success", "Item baixado com sucesso");
+
+                // $("#listaProdutosRegistros").html('');
+                //$("#listaProdutosRegistros").html(data);
+
+            },
+            error: function(data) {
+
+                ToastCustom(1, "error", data.responseText);
+            }
+        });
+    }
+
+</script>

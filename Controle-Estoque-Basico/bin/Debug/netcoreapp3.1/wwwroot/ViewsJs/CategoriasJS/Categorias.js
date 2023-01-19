@@ -76,7 +76,7 @@ function ExcluirCategoriasIndex() {
 
     Swal.fire({
         icon: 'question',
-        title: 'Excluir',
+        title: '<h3>Excluir</h3>',
         text: 'Deseja realmente excluir este(s) registro(s)?',
         showCancelButton: true,
         confirmButtonColor: '#36c6d3',
@@ -110,7 +110,7 @@ function ConfirmaExcluir() {
 
         swal.fire({
             icon: 'info',
-            title: "Atenção",
+            title: "<h3>Atenção</h3>",
             text: 'Selecione ao menos um registro.',
             showCancelButton: true,
             showConfirmButton: false,
@@ -128,7 +128,7 @@ function ExcluirCategoriasPartial(id) {
 
     Swal.fire({
         icon: 'question',
-        title: 'Excluir',
+        title: '<h3>Excluir</h3>',
         text: 'Deseja realmente excluir este(s) registro(s)?',
         showCancelButton: true,
         confirmButtonColor: '#36c6d3',        
@@ -177,12 +177,13 @@ function ExcluirVarios(registro) {
 
             swal.fire({
                 icon: 'error',
-                title: "Excluir",              
+                title: "<h3>Excluir</h3>",              
                 text: data.responseJSON,
                 showCancelButton: true,
                 showConfirmButton: false,
                 cancelButtonColor: '#d33',               
-                cancelButtonText: 'Fechar'
+                cancelButtonText: 'Fechar',
+                footer: '<a href="Produtos/Index">Lista de Produtos</label>'                
             });
 
             //ToastCustom(1, "error", data.responseText);
@@ -256,3 +257,4 @@ function ToastCustom(modelo, tipo, mensagem) {
     }
 
 }
+

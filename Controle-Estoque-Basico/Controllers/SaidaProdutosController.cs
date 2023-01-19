@@ -19,13 +19,13 @@ namespace Controle_Estoque_Basico.Controllers
             _context = context;
         }
 
-      
+
         public async Task<IActionResult> Index()
         {
             return View(await _context.Produto.Include(p => p.Categoria).Where(x => x.PRO_ISDELETED == false && x.PRO_STATUS == true).ToListAsync());
         }
 
-       
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,14 +44,14 @@ namespace Controle_Estoque_Basico.Controllers
             return View(produto);
         }
 
-       
+
         public IActionResult Create()
         {
             ViewData["PRO_IDCATEGORIA"] = new SelectList(_context.Categoria, "CAT_ID", "CAT_NOME");
             return View();
         }
 
-      
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PRO_ID,PRO_NOME,PRO_DESCRICAO,PRO_QUANTIDADE,PRO_DATAENTRADA,PRO_VALIDADE,PRO_IDCATEGORIA,PRO_ISDELETED")] Produto produto)
@@ -159,14 +159,20 @@ namespace Controle_Estoque_Basico.Controllers
             return await _context.Produto.Where(x => x.PRO_ISDELETED == false && x.PRO_STATUS == true).CountAsync();
         }
 
-        public async Task<JsonResult> InformarVendaProduto(int _id)
+        public async Task<JsonResult> InformarBaixaProduto(int _id, decimal _qtd)
         {
 
             Produto produto = await _context.Produto.Where(x => x.PRO_ID == _id).FirstOrDefaultAsync();
 
             if (produto != null)
             {
-                produto.PRO_STATUS = true;
+                if (produto.PRO_QUANTIDADE >= _qtd)
+                    produto.PRO_QUANTIDADE -= _qtd;
+
+
+                if (produto.PRO_QUANTIDADE == 0)
+                    produto.PRO_STATUS = true;
+
                 await _context.SaveChangesAsync();
             }
 
