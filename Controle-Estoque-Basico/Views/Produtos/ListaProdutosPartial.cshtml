@@ -19,7 +19,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.PRO_NOME)
             </th>
-
             <th>
                 @Html.DisplayNameFor(model => model.PRO_DESCRICAO)
             </th>
@@ -57,7 +56,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.PRO_NOME)
                 </td>
-
                 <td>
                     @Html.DisplayFor(modelItem => item.PRO_DESCRICAO)
                 </td>
@@ -82,13 +80,22 @@
                    
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.PRO_ID">  <i class="fas fa-edit"></i></a> &nbsp;
-                    <a asp-action="Details" asp-route-id="@item.PRO_ID"><i class="fas fa-search"></i></a> &nbsp;
-                    <a class="btn-md" onclick="ExcluirProdutosPartial(@item.PRO_ID)"> <i class="fas fa-trash"></i></a> &nbsp;
-                    <a class="btn-md" onclick="ShowModalBaixaProdutos(@item.PRO_ID)"> <i class="fa fa-check-circle"></i></a>
+                    <a asp-action="Edit" asp-route-id="@item.PRO_ID" title="Editar"><i class="fas fa-edit"></i></a> &nbsp;
+                    <a asp-action="Details" asp-route-id="@item.PRO_ID" title="Detalhes"><i class="fa fa-search"></i></a> &nbsp;
+                    <a title="Excluir" class="btn-md" onclick="ExcluirProdutosPartial(@item.PRO_ID)"> <i class="fas fa-trash"></i></a> &nbsp;
+                    <a title="Baixar Estoque" class="btn-md" onclick="ShowModalBaixaProdutos(@item.PRO_ID)"><i class="fa fa-minus-circle"></i></a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<style>
+
+  /*  .fa {
+  color: grey;
+  }*/
+
+
+</style>
 

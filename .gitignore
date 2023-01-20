@@ -4,6 +4,11 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 *.vsidx
+*.dll
+*.pdb
+*.cshtml.g.cs
+*.v2
+*.suo
 
 # User-specific files
 *.rsuser

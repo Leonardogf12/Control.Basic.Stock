@@ -25,9 +25,8 @@ namespace Controle_Estoque_Basico.Controllers
 
 
         public async Task<IActionResult> Index()
-        {
-            var teste = await _context.SaidaProduto.Where(x => x.SPRO_ISDELETED == false).ToListAsync();
-           return View(teste);
+        {          
+           return View(await _context.SaidaProduto.Include(x => x.Produto).Include(x => x.Categoria).Where(x => x.SPRO_ISDELETED == false).ToListAsync());
         }
 
 
@@ -38,15 +37,17 @@ namespace Controle_Estoque_Basico.Controllers
                 return NotFound();
             }
 
-            var produto = await _context.Produto
-                .Include(p => p.Categoria)
-                .FirstOrDefaultAsync(m => m.PRO_ID == id);
-            if (produto == null)
+            var saidaProduto = await _context.SaidaProduto
+                .Include(x=>x.Produto)
+                .Include(x=>x.Categoria)
+                .FirstOrDefaultAsync(m => m.SPRO_ID == id);
+            
+            if (saidaProduto == null)
             {
                 return NotFound();
             }
 
-            return View(produto);
+            return View(saidaProduto);
         }
 
 
@@ -171,8 +172,20 @@ namespace Controle_Estoque_Basico.Controllers
 
             Produto produto = await _context.Produto.Where(x => x.PRO_ID == _id).FirstOrDefaultAsync();
 
+            if (produto == null)
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                return Json($"Produto não encontrado, contate o suporte.");
+            }
+
             if (produto != null)
             {
+                if(produto.PRO_QUANTIDADE < _qtd)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                    return Json($"A quantidade informada não pode ser maior que a quantidade em Estoque.");
+                }
+
                 if (produto.PRO_QUANTIDADE >= _qtd)
                     produto.PRO_QUANTIDADE -= _qtd;
 

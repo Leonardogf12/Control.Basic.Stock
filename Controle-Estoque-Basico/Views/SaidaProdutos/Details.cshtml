@@ -1,60 +1,69 @@
-﻿@model Controle_Estoque_Basico.Models.Produto
+﻿@model Controle_Estoque_Basico.Models.SaidaProduto
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Saída do Produto";
 }
 
-<h1>Details</h1>
+<div class="content-wrapper">
 
-<div>
-    <h4>Produto</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PRO_NOME)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PRO_NOME)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PRO_DESCRICAO)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PRO_DESCRICAO)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PRO_QUANTIDADE)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PRO_QUANTIDADE)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PRO_DATAENTRADA)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PRO_DATAENTRADA)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PRO_VALIDADE)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PRO_VALIDADE)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PRO_ISDELETED)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PRO_ISDELETED)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Categoria)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Categoria.CAT_NOME)
-        </dd>
-    </dl>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-12">
+                <div class="col-sm-12">
+                    <h1 class="text-center">@ViewData["Title"]</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Detalhamento de Saída do Produto</h3>
+                    </div>
+                
+                    <div class="card-body p-0">
+                        <table class="table table-sm">
+                            <thead>
+                                @* vazio *@
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-bold">@Html.DisplayNameFor(model => model.Categoria.CAT_NOME):</td>
+                                    <td>@Html.DisplayFor(model => model.Categoria.CAT_NOME)</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-bold">@Html.DisplayNameFor(model => model.Produto.PRO_NOME):</td>
+                                    <td>@Html.DisplayFor(model => model.Produto.PRO_NOME)</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-bold">@Html.DisplayNameFor(model => model.Produto.PRO_DESCRICAO):</td>
+                                    <td>@Html.DisplayFor(model => model.Produto.PRO_DESCRICAO)</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-bold">@Html.DisplayNameFor(model => model.SPRO_DATASAIDA):</td>
+                                    <td>@Html.DisplayFor(model => model.SPRO_DATASAIDA)</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-bold">@Html.DisplayNameFor(model => model.SPRO_QUANTIDADE):</td>
+                                    <td>@Html.DisplayFor(model => model.SPRO_QUANTIDADE)</td>
+                                </tr>                            
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row col-md-2 p-4">
+                        <div>
+                            <a asp-action="Index" class="btn bg-gradient-secondary">Voltar</a>
+                            @*<a asp-action="Edit" asp-route-id="@Model.SPRO_ID" class="btn btn-outline-primary">Editar</a>*@
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.PRO_ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
