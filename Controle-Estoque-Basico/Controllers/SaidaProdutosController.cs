@@ -192,7 +192,7 @@ namespace Controle_Estoque_Basico.Controllers
                 await _repSpro.Salvar(saidaProduto);
             }
 
-            return Json("OK");
+            return Json("O.k");
         }
     }
 }
