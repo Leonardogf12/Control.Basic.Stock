@@ -39,6 +39,7 @@ namespace Controle_Estoque_Basico
             //*INJECAO DE DEPENDENCIAS
             services.AddScoped<AppDbContext>();
             services.AddScoped<ICategoriasRepositorio, CategoriasRepositorio>();   
+            services.AddScoped<ISaidaProdutosRepositorio, SaidaProdutosRepositorio>();   
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -9,7 +9,7 @@ namespace Controle_Estoque_Basico.Models
         [Key]
         public int PRO_ID { get; set;}
 
-        [Display(Name = "Nome")]
+        [Display(Name = "Produto")]
         [Required(ErrorMessage = "O nome é obrigatório.")]
         [StringLength(50, MinimumLength = 5, ErrorMessage = "O Produto deve ter no mínimo 5 e no máximo 100 caracteres.")]
         public string PRO_NOME { get; set; }

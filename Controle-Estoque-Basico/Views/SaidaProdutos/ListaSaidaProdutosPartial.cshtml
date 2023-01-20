@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Controle_Estoque_Basico.Models.SaidaProduto>
+
+<script src="~/theme/plugins/jquery/jquery.min.js"></script>
+
+<table id="dtProdutos" class="table table-hover">
+    <thead>
+        <tr>
+            <th class="p-4">
+                <div class="form-check">
+                    <label class="form-check-label p-2">
+                        <input class="form-check-input" type="checkbox" id="checkAll">
+                        <span class="form-check-sign"></span>
+                    </label>
+                </div>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria.CAT_NOME)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produto.PRO_NOME)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.SPRO_DATASAIDA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SPRO_QUANTIDADE)
+            </th>                    
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-left">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" id="@item.SPRO_ID" name="LISTACHECK">
+                            <span class="form-check-sign"></span>
+                        </label>
+                    </div>
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoria.CAT_NOME)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Produto.PRO_NOME)
+                </td>              
+                <td>
+                    @Html.DisplayFor(modelItem => item.SPRO_DATASAIDA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SPRO_QUANTIDADE)
+                </td>                               
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.SPRO_ID">  <i class="fas fa-edit"></i></a> &nbsp;
+                    <a asp-action="Details" asp-route-id="@item.SPRO_ID"><i class="fas fa-search"></i></a> &nbsp;
+                    <a class="btn-md" onclick="ExcluirProdutosPartial(@item.SPRO_ID)"> <i class="fas fa-trash"></i></a>                  
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

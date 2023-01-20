@@ -80,11 +80,56 @@ namespace Controle_Estoque_Basico.Migrations
                     b.ToTable("Produto");
                 });
 
+            modelBuilder.Entity("Controle_Estoque_Basico.Models.SaidaProduto", b =>
+                {
+                    b.Property<int>("SPRO_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SPRO_DATASAIDA")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("SPRO_IDCATEGORIA")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SPRO_IDPRODUTO")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("SPRO_ISDELETED")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<decimal>("SPRO_QUANTIDADE")
+                        .HasColumnType("decimal(18, 3)");
+
+                    b.HasKey("SPRO_ID");
+
+                    b.HasIndex("SPRO_IDCATEGORIA");
+
+                    b.HasIndex("SPRO_IDPRODUTO");
+
+                    b.ToTable("SaidaProduto");
+                });
+
             modelBuilder.Entity("Controle_Estoque_Basico.Models.Produto", b =>
                 {
                     b.HasOne("Controle_Estoque_Basico.Models.Categoria", "Categoria")
                         .WithMany()
                         .HasForeignKey("PRO_IDCATEGORIA")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Controle_Estoque_Basico.Models.SaidaProduto", b =>
+                {
+                    b.HasOne("Controle_Estoque_Basico.Models.Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("SPRO_IDCATEGORIA")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Controle_Estoque_Basico.Models.Produto", "Produto")
+                        .WithMany()
+                        .HasForeignKey("SPRO_IDPRODUTO")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

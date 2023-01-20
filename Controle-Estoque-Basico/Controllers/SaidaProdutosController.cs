@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Controle_Estoque_Basico.Data;
 using Controle_Estoque_Basico.Models;
+using Controle_Estoque_Basico.Interfaces;
 
 namespace Controle_Estoque_Basico.Controllers
 {
@@ -14,15 +15,19 @@ namespace Controle_Estoque_Basico.Controllers
     {
         private readonly AppDbContext _context;
 
-        public SaidaProdutosController(AppDbContext context)
+        private readonly ISaidaProdutosRepositorio _repSpro;
+
+        public SaidaProdutosController(AppDbContext context, ISaidaProdutosRepositorio repSpro)
         {
             _context = context;
+            _repSpro = repSpro;
         }
 
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Produto.Include(p => p.Categoria).Where(x => x.PRO_ISDELETED == false && x.PRO_STATUS == true).ToListAsync());
+            var teste = await _context.SaidaProduto.Where(x => x.SPRO_ISDELETED == false).ToListAsync();
+           return View(teste);
         }
 
 
@@ -154,9 +159,11 @@ namespace Controle_Estoque_Basico.Controllers
             return _context.Produto.Any(e => e.PRO_ID == id);
         }
 
-        public async Task<int> TotalSaidaProdutos()
+        public async Task<decimal> TotalSaidaProdutos()
         {
-            return await _context.Produto.Where(x => x.PRO_ISDELETED == false && x.PRO_STATUS == true).CountAsync();
+            var qtd = await _context.SaidaProduto.Where(x => x.SPRO_ISDELETED == false).ToListAsync();
+          
+            return qtd.Select(x => x.SPRO_QUANTIDADE).Sum(); ;
         }
 
         public async Task<JsonResult> InformarBaixaProduto(int _id, decimal _qtd)
@@ -174,6 +181,15 @@ namespace Controle_Estoque_Basico.Controllers
                     produto.PRO_STATUS = true;
 
                 await _context.SaveChangesAsync();
+
+                SaidaProduto saidaProduto = new SaidaProduto();
+
+                saidaProduto.SPRO_IDPRODUTO = produto.PRO_ID;
+                saidaProduto.SPRO_IDCATEGORIA = produto.PRO_IDCATEGORIA;
+                saidaProduto.SPRO_QUANTIDADE = _qtd;
+                saidaProduto.SPRO_DATASAIDA = DateTime.Now;
+                
+                await _repSpro.Salvar(saidaProduto);
             }
 
             return Json("OK");

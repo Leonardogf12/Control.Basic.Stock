@@ -877,3 +877,5 @@ D:\PROJETOS\Control.Basic.Stock\Controle-Estoque-Basico\obj\Debug\netcoreapp3.1\
 D:\PROJETOS\Control.Basic.Stock\Controle-Estoque-Basico\obj\Debug\netcoreapp3.1\Controle-Estoque-Basico.pdb
 D:\PROJETOS\Control.Basic.Stock\Controle-Estoque-Basico\obj\Debug\netcoreapp3.1\Controle-Estoque-Basico.genruntimeconfig.cache
 D:\PROJETOS\Control.Basic.Stock\Controle-Estoque-Basico\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Componentes\ModalBaixaProdutos.cshtml.g.cs
+D:\PROJETOS\Control.Basic.Stock\Controle-Estoque-Basico\bin\Debug\netcoreapp3.1\wwwroot\ViewsJs\SaidaProdutosJs\SaidaProdutos.js
+D:\PROJETOS\Control.Basic.Stock\Controle-Estoque-Basico\obj\Debug\netcoreapp3.1\Razor\Views\SaidaProdutos\ListaSaidaProdutosPartial.cshtml.g.cs
