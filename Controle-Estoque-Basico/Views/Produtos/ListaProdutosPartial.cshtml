@@ -68,22 +68,30 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.PRO_VALIDADE)
                 </td>
-                <td>                   
+                <td>
                     @if (item.PRO_STATUS)
                     {
-                        <span title="Vendido" class="badge bg-success">Vendido</span>                         
+                        <span title="Vendido" class="badge bg-success">Vendido</span>
                     }
                     else
                     {
-                        <span title="Em Estoque" class="badge bg-info">Em Estoque</span>    
+                        <span title="Em Estoque" class="badge bg-info">Em Estoque</span>
                     }
-                   
+
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.PRO_ID" title="Editar"><i class="fas fa-edit"></i></a> &nbsp;
                     <a asp-action="Details" asp-route-id="@item.PRO_ID" title="Detalhes"><i class="fa fa-search"></i></a> &nbsp;
-                    <a title="Excluir" class="btn-md" onclick="ExcluirProdutosPartial(@item.PRO_ID)"> <i class="fas fa-trash"></i></a> &nbsp;
-                    <a title="Baixar Estoque" class="btn-md" onclick="ShowModalBaixaProdutos(@item.PRO_ID)"><i class="fa fa-minus-circle"></i></a>
+                    <a title="Excluir" class="btn-md" onclick="ExcluirProdutosPartial(@item.PRO_ID)"> <i class="fas fa-trash" style="cursor:pointer;"></i></a> &nbsp;
+
+                    @if (item.PRO_QUANTIDADE > 0)
+                    {                        
+                        <a title="Baixar Estoque" class="btn-md" onclick="ShowSwalBaixaProdutos(@item.PRO_ID)"><i class="fa fa-minus-circle" style="cursor: pointer;"></i></a>                        
+                    }
+                    else
+                    {                      
+                        <a title="Baixar Estoque" class="btn-md" ><i class="fa fa-minus-circle" style="color:grey;"></i></a>
+                    }
                 </td>
             </tr>
         }
@@ -92,10 +100,6 @@
 
 <style>
 
-  /*  .fa {
-  color: grey;
-  }*/
-
-
+     
 </style>
 

@@ -154,35 +154,7 @@ namespace Controle_Estoque_Basico.Controllers
             }
             return View(categoria);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Excluir(int _id)
-        {
-            try
-            {
-                if (_id == 0)
-                    return Json("Categoria não encontrada ou id inexistente.");
-
-                var categoria = await _context.Categoria.FindAsync(_id);
-
-                if (categoria == null)
-                    return Json("Categoria não encontrada.");
-
-                _context.Categoria.Remove(categoria);
-                await _context.SaveChangesAsync();
-
-
-                return PartialView("ListaCategoriasPartial", await _context.Categoria.ToListAsync());
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            string mensagem = string.Empty;
-
-
-        }
-
+        
         [HttpPost]
         public async Task<IActionResult> ExcluirVarios(string _registros)
         {

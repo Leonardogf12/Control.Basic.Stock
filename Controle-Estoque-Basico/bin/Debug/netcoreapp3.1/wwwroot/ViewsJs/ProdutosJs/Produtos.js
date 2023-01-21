@@ -1,5 +1,4 @@
 ﻿
-
 $(document).ready(function () {
 
     CriaDataTableProdutos();
@@ -7,11 +6,11 @@ $(document).ready(function () {
 
 function CriaDataTableProdutos() {
 
-    $("#dtProdutos").DataTable({                   
-        "responsive":true,
+    $("#dtProdutos").DataTable({
+        "responsive": true,
         "lengthChange": true,
-        "autoWidth": true,         
-        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],       
+        "autoWidth": true,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
         'lengthMenu': [[10, 20, 30, 40, -1], [10, 20, 30, 40, "Todos"]],
         columnDefs: [
             { width: 10, targets: 0 },
@@ -72,11 +71,31 @@ function checkAll() {
     }
 }
 
-function ExcluirProdutosPartial(id) {
-    ExcluirVarios(id);
+//* FUNCAO DO BOTAO EXCLUIR DA INDEX.
+function ExcluirProdutosIndex() {
+
+    Swal.fire({
+        icon: 'question',
+        title: '<h3>Excluir</h3>',
+        text: 'Deseja realmente excluir este(s) registro(s)?',
+        showCancelButton: true,
+        confirmButtonColor: '#36c6d3',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Confirmar',
+        footer: '<p>Obs: Não será possível recuperar um registro excluído.</label>'
+    }).then(function (result) {
+        if (result.value) {
+
+            ConfirmaExcluir();
+        }
+    });
+
 }
 
-function ExcluirProdutosIndex() {
+//* VERIFICA SE EXISTE ITEMS CHECKADOS/MARCADOS NA LISTA PARA EXCLUIR.
+function ConfirmaExcluir() {
+
     var checkboxes = document.getElementsByName('LISTACHECK');
 
     var registro = '';
@@ -88,13 +107,45 @@ function ExcluirProdutosIndex() {
     }
 
     if (registro == '') {
-        ToastCustom(1, "error", "Selecione ao menos um registro.");
+
+        swal.fire({
+            icon: 'info',
+            title: "<h3>Atenção</h3>",
+            text: 'Selecione ao menos um registro.',
+            showCancelButton: true,
+            showConfirmButton: false,
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Fechar'
+        });
 
     } else {
         ExcluirVarios(registro)
     }
 }
 
+//* FUNCAO DO BOTAO EXCLUIR DA ListaProdutosPatial.
+function ExcluirProdutosPartial(id) {
+
+    Swal.fire({
+        icon: 'question',
+        title: '<h3>Excluir</h3>',
+        text: 'Deseja realmente excluir este(s) registro(s)?',
+        showCancelButton: true,
+        confirmButtonColor: '#36c6d3',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Confirmar',
+        footer: '<p>Obs: Não será possível recuperar um registro excluído.</label>'
+    }).then(function (result) {
+        if (result.value) {
+
+            ExcluirVarios(id);
+        }
+
+    });
+}
+
+//* FUNCAO PARA CHAMAR CONTROLLER.
 function ExcluirVarios(registro) {
     var url = "/Produtos/ExcluirVarios/";
 
@@ -107,28 +158,101 @@ function ExcluirVarios(registro) {
         },
         success: function (data) {
 
-            ToastCustom(1, "success", "Produto excluido com sucesso");
-
-            //2nd empty html
-            //$("#dtProdutos" + " tbody").empty();
-            //$("#dtProdutos" + " thead").empty();
-
-
-            
-            //var table = $("#dtProdutos").DataTable();
-
             $("#listaProdutosRegistros").html('');
             $("#listaProdutosRegistros").html(data);
-            //CriaDataTableProdutos();
-           
 
-            //document.location.reload(true);
+            Swal.fire({
+                icon: 'success',
+                title: '<h3>Sucesso</h3>',
+                text: 'Registro excluído com sucesso.',
+                showConfirmButton: false,
+                timer: 2000
+            });
         },
         error: function (data) {
 
-            ToastCustom(1, "error", data.responseText);
+            swal.fire({
+                icon: 'error',
+                title: "<h3>Excluir</h3>",
+                text: data.responseJSON,
+                showCancelButton: true,
+                showConfirmButton: false,
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Fechar',
+                footer: '<a href="Produtos/Index">Lista de Produtos</label>'
+            });
+
+            //ToastCustom(1, "error", data.responseText);
         }
     });
+}
+
+function ShowSwalBaixaProdutos(id) {
+
+    var qtd = 0;
+
+    Swal.fire({
+        title: 'Digite a quantidade a ser baixada:',
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar',
+        showLoaderOnConfirm: true,
+        preConfirm: (valor) => {
+
+
+            if (isNaN(valor)) {
+                ToastCustom(1, "error", 'Digite um valor válido');
+                return false;
+            }
+
+            if (valor == 0 || valor < 0) {
+                ToastCustom(1, "error", 'Digite um valor maior que zero.');
+                return false;
+            }
+
+            if (valor == 0) {
+                ToastCustom(1, "error", 'Digite um valor maior que zero.');
+                return false;
+            }
+
+            qtd = valor;
+        },
+        /*allowOutsideClick: () => !Swal.isLoading()*/
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+
+            var url = "/Produtos/InformarBaixaProduto";
+
+            var idProduto = id;
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                datatype: 'JSON',
+                data: { _id: idProduto, _qtd: qtd },
+                beforeSend: function () {
+                },
+                success: function (data) {
+
+                    $("#listaProdutosRegistros").html('');
+                    $("#listaProdutosRegistros").html(data);
+
+                    ToastCustom(1, "success", "Item baixado com sucesso");
+                },
+                error: function (data) {
+
+                    ToastCustom(1, "error", data.responseJSON);
+
+                }
+            });
+        }
+    });
+
 }
 
 function InformarVenda(registro) {

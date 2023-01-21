@@ -17,11 +17,13 @@ namespace Controle_Estoque_Basico.Controllers
     {
         private readonly AppDbContext _context;        
         private readonly ICategoriasRepositorio _repCat;
+        private readonly ISaidaProdutosRepositorio _repSpro;
 
-        public ProdutosController(AppDbContext context, ICategoriasRepositorio repCat)
+        public ProdutosController(AppDbContext context, ICategoriasRepositorio repCat, ISaidaProdutosRepositorio repSpro)
         {
             _context = context;
             _repCat = repCat;
+            _repSpro = repSpro;
         }
 
         #region GETS
@@ -67,17 +69,24 @@ namespace Controle_Estoque_Basico.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
+            List<Categoria> categorias = await _repCat.BuscaCategorias();
+            var vm = new ProdutosViewModel { Categorias = categorias };
+
             if (id == null)
             {
                 return NotFound();
             }
 
             var produto = await _context.Produto.FindAsync(id);
+
+            vm.Produto = produto;
+
             if (produto == null)
             {
                 return NotFound();
             }
-            return View(produto);
+
+            return View(vm);
         }
 
         #endregion
@@ -103,7 +112,7 @@ namespace Controle_Estoque_Basico.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PRO_ID,PRO_NOME,PRO_DESCRICAO,PRO_DATAENTRADA, PRO_VALIDADE,PRO_QUANTIDADE")] Produto produto)
+        public async Task<IActionResult> Edit(int id, [Bind("PRO_ID, PRO_NOME, PRO_DESCRICAO, PRO_DATAENTRADA, PRO_VALIDADE, PRO_QUANTIDADE, PRO_IDCATEGORIA")] Produto produto)
         {
             if (id != produto.PRO_ID)
             {
@@ -134,35 +143,7 @@ namespace Controle_Estoque_Basico.Controllers
 
             return View(produto);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Excluir(int _id)
-        {
-            try
-            {
-                if (_id == 0)
-                    return Json("Produto não encontrado ou id inexistente.");
-
-                var produto = await _context.Produto.FindAsync(_id);
-
-                if (produto == null)
-                    return Json("Produto não encontrado.");
-
-                _context.Produto.Remove(produto);
-                await _context.SaveChangesAsync();
-
-
-                return PartialView("ListaProdutosPartial", await _context.Produto.ToListAsync());
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            string mensagem = string.Empty;
-
-
-        }
-
+        
         [HttpPost]
         public async Task<IActionResult> ExcluirVarios(string _registros)
         {
@@ -180,10 +161,9 @@ namespace Controle_Estoque_Basico.Controllers
                 for (int i = 0; i < aRegistros.Length; i++)
                 {
                     var produto = await _context.Produto.FindAsync(aRegistros[i]);
-
+                    
                     produto.PRO_ISDELETED = true;
-
-                    //_context.Produto.Remove(produto);
+                   
                     await _context.SaveChangesAsync();
                 }
                 
@@ -208,23 +188,48 @@ namespace Controle_Estoque_Basico.Controllers
         public async Task<int> TotalProdutosEmEstoque()
         {
             return await _context.Produto.Where(x => x.PRO_ISDELETED == false).CountAsync();
-        }
+        }        
 
-        public async void CarregaViewCreate()
+        public async Task<IActionResult> InformarBaixaProduto(int _id, decimal _qtd)
         {
 
-            var listaCategoria = await _context.Categoria.Where(x => x.CAT_ISDELETED == false).ToListAsync();
+            Produto produto = await _context.Produto.Where(x => x.PRO_ID == _id).FirstOrDefaultAsync();
 
-            if (listaCategoria.Count() > 0)
+            if (produto == null)
             {
-                var categorias = new SelectList(listaCategoria, "CAT_ID", "CAT_NOME").ToList();
-
-                ViewBag.CategoriasVB = categorias;
-
-                ViewData["VehicleId"] = categorias;
+                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                return Json($"Produto não encontrado, contate o suporte.");
             }
-        }
 
+            if (produto != null)
+            {
+                if (produto.PRO_QUANTIDADE < _qtd)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                    return Json($"A quantidade informada não pode ser maior que a quantidade em Estoque.");
+                }
+
+                if (produto.PRO_QUANTIDADE >= _qtd)
+                    produto.PRO_QUANTIDADE -= _qtd;
+
+
+                if (produto.PRO_QUANTIDADE == 0)
+                    produto.PRO_STATUS = true;
+
+                await _context.SaveChangesAsync();
+
+                SaidaProduto saidaProduto = new SaidaProduto();
+
+                saidaProduto.SPRO_IDPRODUTO = produto.PRO_ID;
+                saidaProduto.SPRO_IDCATEGORIA = produto.PRO_IDCATEGORIA;
+                saidaProduto.SPRO_QUANTIDADE = _qtd;
+                saidaProduto.SPRO_DATASAIDA = DateTime.Now;
+
+                await _repSpro.Salvar(saidaProduto);
+            }
+
+            return PartialView("ListaProdutosPartial", await _context.Produto.Where(x => x.PRO_ISDELETED == false).ToListAsync());
+        }
 
         #endregion
 

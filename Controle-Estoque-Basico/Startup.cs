@@ -39,6 +39,7 @@ namespace Controle_Estoque_Basico
             //*INJECAO DE DEPENDENCIAS
             services.AddScoped<AppDbContext>();
             services.AddScoped<ICategoriasRepositorio, CategoriasRepositorio>();   
+            services.AddScoped<IProdutosRepositorio, ProdutosRepositorio>();   
             services.AddScoped<ISaidaProdutosRepositorio, SaidaProdutosRepositorio>();   
         }
 

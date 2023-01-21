@@ -36,6 +36,10 @@
         idProduto = id;
     }
 
+    function CloseModalBaixaProdutos() {
+        $("#modal-default-ModalBaixaProdutos").modal('hide');
+    }
+
     function TesteBaixaProduto() {
 
         var url = "/SaidaProdutos/InformarBaixaProduto";
@@ -55,13 +59,17 @@
 
                 $("#listaProdutosRegistros").html('');
                 $("#listaProdutosRegistros").html(data);
+                
+                CloseModalBaixaProdutos();
 
                 ToastCustom(1, "success", "Item baixado com sucesso");
             },
             error: function(data) {
                 console.log("erro");
                 console.log(data);
+                CloseModalBaixaProdutos();
                 ToastCustom(1, "error", data.responseJSON);
+
             }
         });
     }

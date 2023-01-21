@@ -45,9 +45,9 @@
                 </td>  
               
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.CAT_ID">  <i class="fas fa-edit"></i></a> &nbsp;
-                    <a asp-action="Details" asp-route-id="@item.CAT_ID"><i class="fas fa-search"></i></a> &nbsp;                  
-                    <a class="btn-md" onclick="ExcluirCategoriasPartial(@item.CAT_ID)"> <i class="fas fa-trash"></i></a>
+                    <a asp-action="Edit" asp-route-id="@item.CAT_ID" title="Editar">  <i class="fas fa-edit"></i></a> &nbsp;
+                    <a asp-action="Details" asp-route-id="@item.CAT_ID" title="Detalhes"><i class="fas fa-search"></i></a> &nbsp;                  
+                    <a title="Excluir" class="btn-md" onclick="ExcluirCategoriasPartial(@item.CAT_ID)"> <i class="fas fa-trash" style="cursor: pointer;"></i></a>
                    
                 </td>
             </tr>

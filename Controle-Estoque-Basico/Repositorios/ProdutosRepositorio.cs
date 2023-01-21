@@ -1,39 +1,29 @@
 ﻿using Controle_Estoque_Basico.Data;
 using Controle_Estoque_Basico.Interfaces;
 using Controle_Estoque_Basico.Models;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Controle_Estoque_Basico.Repositorios
 {
-    public class CategoriasRepositorio : ICategoriasRepositorio
+    public class ProdutosRepositorio : IProdutosRepositorio
     {
         private readonly AppDbContext _context;
 
-        public CategoriasRepositorio(AppDbContext context)
+        public ProdutosRepositorio(AppDbContext context)
         {
             _context = context;
         }
 
-        #region GETS
-        public async Task<List<Categoria>> BuscaCategorias()
-        {
-            return await _context.Categoria.Where(x => x.CAT_ISDELETED == false).ToListAsync();
-        }
-        #endregion
-
         #region POSTS
 
-        public async Task<Categoria> Salvar(Categoria _registro)
+        public async Task<Produto> Salvar(Produto _registro)
         {
             try
             {
-                if (_registro.CAT_ID == 0)
+                if (_registro.PRO_ID == 0)
                 {
-                    _context.Categoria.Add(_registro);
+                    _context.Produto.Add(_registro);
                     await _context.SaveChangesAsync();
                 }
 
@@ -48,15 +38,15 @@ namespace Controle_Estoque_Basico.Repositorios
         public async Task<bool> Excluir(int Id)
         {
 
-            Categoria registro = await _context.Categoria.FindAsync(Id);
+            Produto registro = await _context.Produto.FindAsync(Id);
 
             if (registro != null)
             {
-                _context.Categoria.Remove(registro);
+                _context.Produto.Remove(registro);
 
                 try
                 {
-                    registro.CAT_ISDELETED = true;
+                    registro.PRO_ISDELETED = true;
                     await Salvar(registro);
                     return true;
                 }
@@ -64,12 +54,12 @@ namespace Controle_Estoque_Basico.Repositorios
                 {
                     throw new Exception(ex.Message);
                 }
-
             }
 
             return false;
         }
 
         #endregion
+
     }
 }

@@ -167,45 +167,6 @@ namespace Controle_Estoque_Basico.Controllers
             return qtd.Select(x => x.SPRO_QUANTIDADE).Sum(); ;
         }
 
-        public async Task<JsonResult> InformarBaixaProduto(int _id, decimal _qtd)
-        {
-
-            Produto produto = await _context.Produto.Where(x => x.PRO_ID == _id).FirstOrDefaultAsync();
-
-            if (produto == null)
-            {
-                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
-                return Json($"Produto não encontrado, contate o suporte.");
-            }
-
-            if (produto != null)
-            {
-                if(produto.PRO_QUANTIDADE < _qtd)
-                {
-                    Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
-                    return Json($"A quantidade informada não pode ser maior que a quantidade em Estoque.");
-                }
-
-                if (produto.PRO_QUANTIDADE >= _qtd)
-                    produto.PRO_QUANTIDADE -= _qtd;
-
-
-                if (produto.PRO_QUANTIDADE == 0)
-                    produto.PRO_STATUS = true;
-
-                await _context.SaveChangesAsync();
-
-                SaidaProduto saidaProduto = new SaidaProduto();
-
-                saidaProduto.SPRO_IDPRODUTO = produto.PRO_ID;
-                saidaProduto.SPRO_IDCATEGORIA = produto.PRO_IDCATEGORIA;
-                saidaProduto.SPRO_QUANTIDADE = _qtd;
-                saidaProduto.SPRO_DATASAIDA = DateTime.Now;
-                
-                await _repSpro.Salvar(saidaProduto);
-            }
-
-            return Json("O.k");
-        }
+        
     }
 }
