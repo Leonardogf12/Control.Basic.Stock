@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Controle_Estoque_Basico.Data;
+using Controle_Estoque_Basico.Interfaces;
+using Controle_Estoque_Basico.Models;
+using Controle_Estoque_Basico.ViewModels;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Controle_Estoque_Basico.Data;
-using Controle_Estoque_Basico.Models;
-using Microsoft.AspNetCore.Http;
-using Controle_Estoque_Basico.ViewModels;
-using Controle_Estoque_Basico.Interfaces;
 
 namespace Controle_Estoque_Basico.Controllers
 {
@@ -17,13 +17,15 @@ namespace Controle_Estoque_Basico.Controllers
     {
         private readonly AppDbContext _context;        
         private readonly ICategoriasRepositorio _repCat;
-        private readonly ISaidaProdutosRepositorio _repSpro;
+        private readonly ISaidaProdutosRepositorio _repSpro;       
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProdutosController(AppDbContext context, ICategoriasRepositorio repCat, ISaidaProdutosRepositorio repSpro)
+        public ProdutosController(AppDbContext context, ICategoriasRepositorio repCat, ISaidaProdutosRepositorio repSpro, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _repCat = repCat;
             _repSpro = repSpro;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         #region GETS
@@ -95,11 +97,15 @@ namespace Controle_Estoque_Basico.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Produto produto)
+        public async Task<IActionResult> Create(ProdutosViewModel model)
         {
             try
             {
-                _context.Add(produto);
+                string uniqueFileName = UploadedFile(model);
+
+                model.Produto.ImagemProdutoModel = uniqueFileName;
+
+                _context.Add(model.Produto);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
 
@@ -229,6 +235,24 @@ namespace Controle_Estoque_Basico.Controllers
             }
 
             return PartialView("ListaProdutosPartial", await _context.Produto.Include(x=>x.Categoria).Where(x => x.PRO_ISDELETED == false).ToListAsync());
+        }
+
+        
+        private string UploadedFile(ProdutosViewModel model)
+        {
+            string uniqueFileName = null;
+
+            if (model.ImagemProdutoViewModel != null)
+            {                
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Imagens");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImagemProdutoViewModel.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.ImagemProdutoViewModel.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
         }
 
         #endregion

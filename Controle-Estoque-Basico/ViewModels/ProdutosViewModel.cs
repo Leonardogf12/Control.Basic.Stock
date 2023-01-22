@@ -1,9 +1,11 @@
 ﻿using Controle_Estoque_Basico.Data;
 using Controle_Estoque_Basico.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Controle_Estoque_Basico.ViewModels
@@ -15,6 +17,10 @@ namespace Controle_Estoque_Basico.ViewModels
 
         [DisplayName("Categorias")]
         public ICollection<Categoria> Categorias { get; set; }
-        
+
+        [Display(Name = "Upload")]
+        [Required(ErrorMessage = "Selecione a imagem para salvar")]
+        public IFormFile ImagemProdutoViewModel { get; set; }
+
     }
 }

@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Novo Produto";
 }
-
+<script src="~/theme/plugins/jquery/jquery.min.js"></script>
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
@@ -21,12 +21,12 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form asp-action="Create">
+                        <form enctype="multipart/form-data" asp-action="Create">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input hidden asp-for="Produto.PRO_ID" />
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="row">
-                                <div class="form-group col-md-4 pr-md-1">                                    
+                                <div class="form-group col-md-4 pr-md-1">
                                     <label asp-for="Produto.PRO_IDCATEGORIA" class="control-label">Categorias</label>
                                     <select asp-for="Produto.PRO_IDCATEGORIA" asp-items="@(new SelectList(Model.Categorias,"CAT_ID", "CAT_NOME"))" class="form-control select2" data-toggle="select2"></select>
                                 </div>
@@ -58,15 +58,25 @@
                                     <input asp-for="Produto.PRO_VALIDADE" class="form-control" type="date" />
                                     <span asp-validation-for="Produto.PRO_VALIDADE" class="text-danger"></span>
                                 </div>
-                                 <div class="form-group col-md-12 pr-md-1">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label asp-for="ImagemProdutoViewModel" class="control-label"></label>
+                                        <div class="custom-file">
+                                            <input asp-for="ImagemProdutoViewModel" class="custom-file-input" id="customFile">
+                                            <label class="custom-file-label" for="customFile">Selecione o arquivo</label>
+                                        </div>
+                                        <span asp-validation-for="ImagemProdutoViewModel" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12 pr-md-1">
                                     <a asp-action="Index" class="btn bg-gradient-danger">Cancelar</a>
                                     <input type="submit" value="Salvar" class="btn btn-outline-success" />
                                 </div>
-                              
+
                             </div>
 
                         </form>
-                         
+
                     </div>
                 </div>
             </div>
@@ -74,10 +84,11 @@
     </div>
 </div>
 
-
+<script src="~/ViewsJs/ProdutosJs/Produtos.js"></script>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    
     }

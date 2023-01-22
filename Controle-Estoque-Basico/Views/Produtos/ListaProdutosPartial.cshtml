@@ -12,6 +12,9 @@
                     </label>
                 </div>
             </th>
+             <th>
+                <p>Imagem</p>
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Categoria.CAT_NOME)
             </th>
@@ -48,7 +51,12 @@
                         </label>
                     </div>
                 </td>
-
+                <td>  
+                    <img src="~/Imagens/@item.ImagemProdutoModel"   
+                         class="rounded-circle"   
+                         height="40" width="40"   
+                         asp-append-version="true" />                     
+                </td> 
                 <td>
                     @Html.DisplayFor(modelItem => item.Categoria.CAT_NOME)
                 </td>

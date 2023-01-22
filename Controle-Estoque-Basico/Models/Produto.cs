@@ -36,6 +36,12 @@ namespace Controle_Estoque_Basico.Models
 
         public bool PRO_ISDELETED { get; set; }
 
+        [DataType(DataType.Upload)]
+        [Display(Name = "Upload")]
+        [Required(ErrorMessage = "Selecione o arquivo para salvar.")]
+        public string ImagemProdutoModel { get; set; }
+
+
         [ForeignKey("PRO_IDCATEGORIA")]
         public virtual Categoria Categoria { get; set; }       
     }

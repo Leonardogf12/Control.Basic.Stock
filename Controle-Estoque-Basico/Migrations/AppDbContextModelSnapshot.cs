@@ -47,6 +47,10 @@ namespace Controle_Estoque_Basico.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("ImagemProdutoModel")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<DateTime>("PRO_DATAENTRADA")
                         .HasColumnType("datetime(6)");
 
