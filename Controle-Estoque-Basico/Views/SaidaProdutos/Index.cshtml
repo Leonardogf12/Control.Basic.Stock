@@ -17,14 +17,41 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12">
+
+                <div class="col-md-12">
                     <div class="card">
-                        <div class="card-body">
+
+                        <div class="card-header">
                             <div class="btn-group">
-                                @*<a asp-action="Create" class="btn bg-gradient-primary">Novo Produto</a>
-                                <a class="btn bg-gradient-danger" onclick="ExcluirProdutosIndex()">Excluir</a>*@
+                                <button onclick="FiltroSaidaProdutos()" class="btn bg-gradient-secondary" data-card-widget="collapse">Filtro</button>
                             </div>
                         </div>
+
+                        <div class="card-body collapse">
+                            <div class="row">
+                                <div class="form-group col-md-3 pr-md-1">
+                                    <label class="control-label">Categoria</label>
+                                    <select class="form-control select2" data-toggle="select2"></select>
+                                </div>
+                                <div class="form-group col-md-3 pr-md-1">
+                                    <label class="control-label">Produto</label>
+                                    <select class="form-control select2" data-toggle="select2"></select>
+                                </div>
+                                <div class="form-group col-md-2 pr-md-1">
+                                    <label class="control-label">Data Início</label>
+                                    <input class="form-control" type="date" />
+                                </div>
+                                <div class="form-group col-md-2 pr-md-1">
+                                    <label class="control-label">Data Fim</label>
+                                    <input class="form-control" type="date" />
+                                </div>
+                                <div class="form-group col-md-12 pr-md-1 pt-3">
+                                    <a data-card-widget="collapse" class="btn bg-gradient-danger">Cancelar</a>
+                                    <input type="submit" value="Filtrar" class="btn btn-outline-primary" />
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -32,8 +59,8 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-body" id="listaSaidaProdutosRegistros">                            
-                            <partial name="ListaSaidaProdutosPartial" model="Model" />  
+                        <div class="card-body" id="listaSaidaProdutosRegistros">
+                            <partial name="ListaSaidaProdutosPartial" model="Model" />
                         </div>
                     </div>
                 </div>
@@ -45,5 +72,5 @@
 
 
 <script src="~/theme/plugins/jquery/jquery.min.js"></script>
-<script src="~/ViewsJs/ProdutosJs/Produtos.js"></script>
+<script src="~/ViewsJs/SaidaProdutosJs/SaidaProdutos.js"></script>
 

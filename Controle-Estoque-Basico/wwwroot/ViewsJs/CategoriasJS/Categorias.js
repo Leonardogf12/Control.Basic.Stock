@@ -159,19 +159,25 @@ function ExcluirVarios(registro) {
         },
         success: function (data) {
 
-            
-            $("#listaCategoriasRegistros").html('');
-            $("#listaCategoriasRegistros").html(data);
-            
 
-            Swal.fire({                
+
+            Swal.fire({
                 icon: 'success',
                 title: '<h3>Sucesso</h3>',
                 text: 'Registro excluído com sucesso.',
                 showConfirmButton: false,
                 timer: 2000
-            });
+            }).then(function () {
 
+                $('#dtCategorias').DataTable().clear().destroy();
+
+                $("#listaCategoriasRegistros").html('');
+                $("#listaCategoriasRegistros").html(data);
+
+                CriaDataTableCategorias();
+
+            });
+                     
         },
         error: function (data) {
 

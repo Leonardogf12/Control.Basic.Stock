@@ -46,7 +46,7 @@ function CriaDataTableProdutos() {
                 "sSortAscending": ": Ativar para ordenar a coluna de maneira ascendente",
                 "sSortDescending": ": Ativar para ordenar a coluna de maneira crescente"
             },
-        },
+        },        
     }).buttons().container().appendTo('#dtProdutos_wrapper .col-md-6:eq(0)');
 }
 
@@ -147,6 +147,7 @@ function ExcluirProdutosPartial(id) {
 
 //* FUNCAO PARA CHAMAR CONTROLLER.
 function ExcluirVarios(registro) {
+
     var url = "/Produtos/ExcluirVarios/";
 
     $.ajax({
@@ -158,15 +159,21 @@ function ExcluirVarios(registro) {
         },
         success: function (data) {
 
-            $("#listaProdutosRegistros").html('');
-            $("#listaProdutosRegistros").html(data);
-
             Swal.fire({
                 icon: 'success',
                 title: '<h3>Sucesso</h3>',
                 text: 'Registro excluído com sucesso.',
                 showConfirmButton: false,
                 timer: 2000
+            }).then(function () {
+
+                $('#dtProdutos').DataTable().clear().destroy();
+                
+                $("#listaProdutosRegistros").html('');
+                $("#listaProdutosRegistros").html(data);
+
+                CriaDataTableProdutos();
+
             });
         },
         error: function (data) {
@@ -221,7 +228,7 @@ function ShowSwalBaixaProdutos(id) {
 
             qtd = valor;
         },
-        /*allowOutsideClick: () => !Swal.isLoading()*/
+       
     }).then((result) => {
 
         if (result.isConfirmed) {
@@ -239,8 +246,12 @@ function ShowSwalBaixaProdutos(id) {
                 },
                 success: function (data) {
 
+                    $('#dtProdutos').DataTable().clear().destroy();
+
                     $("#listaProdutosRegistros").html('');
                     $("#listaProdutosRegistros").html(data);
+
+                    CriaDataTableProdutos();
 
                     ToastCustom(1, "success", "Item baixado com sucesso");
                 },

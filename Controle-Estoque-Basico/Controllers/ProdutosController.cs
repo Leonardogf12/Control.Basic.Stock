@@ -167,7 +167,7 @@ namespace Controle_Estoque_Basico.Controllers
                     await _context.SaveChangesAsync();
                 }
                 
-                return PartialView("ListaProdutosPartial", await _context.Produto.Where(x => x.PRO_ISDELETED == false).ToListAsync());
+                return PartialView("ListaProdutosPartial", await _context.Produto.Include(x=>x.Categoria).Where(x => x.PRO_ISDELETED == false).ToListAsync());
             }
             catch (Exception ex)
             {
@@ -189,7 +189,7 @@ namespace Controle_Estoque_Basico.Controllers
         {
             return await _context.Produto.Where(x => x.PRO_ISDELETED == false).CountAsync();
         }        
-
+        
         public async Task<IActionResult> InformarBaixaProduto(int _id, decimal _qtd)
         {
 
@@ -228,7 +228,7 @@ namespace Controle_Estoque_Basico.Controllers
                 await _repSpro.Salvar(saidaProduto);
             }
 
-            return PartialView("ListaProdutosPartial", await _context.Produto.Where(x => x.PRO_ISDELETED == false).ToListAsync());
+            return PartialView("ListaProdutosPartial", await _context.Produto.Include(x=>x.Categoria).Where(x => x.PRO_ISDELETED == false).ToListAsync());
         }
 
         #endregion

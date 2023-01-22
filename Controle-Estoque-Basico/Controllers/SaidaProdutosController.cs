@@ -25,8 +25,9 @@ namespace Controle_Estoque_Basico.Controllers
 
 
         public async Task<IActionResult> Index()
-        {          
-           return View(await _context.SaidaProduto.Include(x => x.Produto).Include(x => x.Categoria).Where(x => x.SPRO_ISDELETED == false).ToListAsync());
+        {
+            var t = await _context.SaidaProduto.Include(x => x.Produto).Include(x => x.Categoria).Where(x => x.SPRO_ISDELETED == false).ToListAsync();
+           return View(t);
         }
 
 

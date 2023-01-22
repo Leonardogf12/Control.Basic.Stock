@@ -156,6 +156,10 @@ function InformarVenda(registro) {
     });
 }
 
+function FiltroSaidaProdutos() {
+    console.log("funcao: FiltroSaidaProdutos()");
+}
+
 function ToastCustom(modelo, tipo, mensagem) {
 
     var Toast = Swal.mixin({

@@ -75,9 +75,21 @@
                     <!-- small box -->
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3>65</h3>
+                            <div class="row" style="justify-content:space-between">
+                                <h3 class="text ml-2" id="quantidadeProdutosAVencer"></h3>
+                                <a class="small-box-footer" onclick="FiltraCardProdutosAVencer()"><i class="fa fa-filter mr-1" style="cursor:pointer; color:white"></i></a>
 
-                            <p>Á vencer</p>
+                            </div>
+
+                            <div class="row m-0 rigth">
+                                <p>Á vencer&nbsp;</p>
+                              <div class="row mr-1 mt-1" style="margin-left: auto;">
+                                    <p style="font-size:small">Período:&nbsp;&nbsp;</p>
+                                    <p style="font-size:small" id="dataDeFiltroInicial">21/12/2022</p>
+                                    <p style="font-size:small">&nbsp; - &nbsp;</p>
+                                    <p style="font-size:small" id="dataAteFiltroInicial">21/02/2023</p>
+                                </div>
+                            </div>
                         </div>
                         <div class="icon">
                             <i class="ion ion-pie-graph"></i>
@@ -94,72 +106,4 @@
 <!-- /.content-wrapper -->
 
 <script src="~/theme/plugins/jquery/jquery.min.js"></script>
-
-<script>
-
-    $(document).ready(function() {
-        CarregaQuantidadeEtoque();
-        CarregaQuantidadeCategoria();
-        CarregaQuantidadeSaidaProdutos();
-    });
-
-    function CarregaQuantidadeEtoque() {
-
-        //CARD 1
-        $.ajax({
-            url: '/Produtos/TotalProdutosEmEstoque/',
-            type: 'GET',
-            datatype: 'JSON',
-            beforeSend: function() {
-            },
-            success: function(data) {
-
-                $("#quantidadeProdutos").html(data);
-            },
-            error: function(data) {
-
-                ToastCustom("error", data.responseText);
-            }
-        });
-    }
-
-    function CarregaQuantidadeCategoria() {
-
-        //CARD 2
-        $.ajax({
-            url: '/Categorias/TotalCategorias/',
-            type: 'GET',
-            datatype: 'JSON',
-            beforeSend: function() {
-            },
-            success: function(data) {
-
-                $("#quantidadeCategorias").html(data);
-            },
-            error: function(data) {
-
-                ToastCustom("error", data.responseText);
-            }
-        });
-    }
-
-    function CarregaQuantidadeSaidaProdutos() {
-        //CARD 2
-        $.ajax({
-            url: '/SaidaProdutos/TotalSaidaProdutos/',
-            type: 'GET',
-            datatype: 'JSON',
-            beforeSend: function() {
-            },
-            success: function(data) {
-               
-                $("#quantidadeSaidaProdutos").html(data);
-            },
-            error: function(data) {
-
-                ToastCustom("error", data.responseText);
-            }
-        });
-    }
-
-</script>
+<script src="~/ViewsJs/HomeJs/HomeJs.js"></script>
