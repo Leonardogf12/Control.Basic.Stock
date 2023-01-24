@@ -34628,13 +34628,13 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
   left: 50%;
   margin-left: -45px;
   position: absolute;
-  top: 80px;
+  top: 100px;
 }
 
 .widget-user .widget-user-image > img {
   border: 3px solid #fff;
   height: auto;
-  width: 90px;
+  width: 150px;
 }
 
 .widget-user .card-footer {
@@ -34666,7 +34666,7 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
 .widget-user-2 .widget-user-image > img {
   float: left;
   height: auto;
-  width: 65px;
+  width: 150px;
 }
 
 .mailbox-messages > .table {

@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <Content Remove="Views\Produtos\Delete.cshtml" />
+    <Content Remove="wwwroot\Imagens\5360576c-1446-40f2-9efb-413134ea4ef7_20201102_124810.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -80,10 +81,6 @@
     <Content Update="wwwroot\ViewsJs\SaidaProdutosJs\SaidaProdutos.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\Imagens\" />
   </ItemGroup>
 
 </Project>

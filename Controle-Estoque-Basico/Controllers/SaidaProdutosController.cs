@@ -27,7 +27,7 @@ namespace Controle_Estoque_Basico.Controllers
         public async Task<IActionResult> Index()
         {
             var t = await _context.SaidaProduto.Include(x => x.Produto).Include(x => x.Categoria).Where(x => x.SPRO_ISDELETED == false).ToListAsync();
-           return View(t);
+            return View(t);
         }
 
 
@@ -39,10 +39,10 @@ namespace Controle_Estoque_Basico.Controllers
             }
 
             var saidaProduto = await _context.SaidaProduto
-                .Include(x=>x.Produto)
-                .Include(x=>x.Categoria)
+                .Include(x => x.Produto)
+                .Include(x => x.Categoria)
                 .FirstOrDefaultAsync(m => m.SPRO_ID == id);
-            
+
             if (saidaProduto == null)
             {
                 return NotFound();
@@ -164,10 +164,11 @@ namespace Controle_Estoque_Basico.Controllers
         public async Task<decimal> TotalSaidaProdutos()
         {
             var qtd = await _context.SaidaProduto.Where(x => x.SPRO_ISDELETED == false).ToListAsync();
-          
-            return qtd.Select(x => x.SPRO_QUANTIDADE).Sum(); ;
+
+            return qtd.Count() > 0 ? qtd.Select(x => x.SPRO_QUANTIDADE).Sum() : 0;
+
         }
 
-        
+
     }
 }

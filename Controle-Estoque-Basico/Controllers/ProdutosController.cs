@@ -15,9 +15,9 @@ namespace Controle_Estoque_Basico.Controllers
 {
     public class ProdutosController : Controller
     {
-        private readonly AppDbContext _context;        
+        private readonly AppDbContext _context;
         private readonly ICategoriasRepositorio _repCat;
-        private readonly ISaidaProdutosRepositorio _repSpro;       
+        private readonly ISaidaProdutosRepositorio _repSpro;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         public ProdutosController(AppDbContext context, ICategoriasRepositorio repCat, ISaidaProdutosRepositorio repSpro, IWebHostEnvironment webHostEnvironment)
@@ -36,13 +36,6 @@ namespace Controle_Estoque_Basico.Controllers
             return View(t);
         }
 
-        public async Task<IActionResult> ListaProdutosPartialAsync()
-        {
-            var lista = await _context.Produto.ToListAsync();
-
-            return PartialView("ListaProdutosPartial", lista);
-        }
-
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -50,14 +43,17 @@ namespace Controle_Estoque_Basico.Controllers
                 return NotFound();
             }
 
-            var produto = await _context.Produto
-                .FirstOrDefaultAsync(m => m.PRO_ID == id);
+            var produto = await _context.Produto.Where(x => x.PRO_ID == id
+                                                && x.PRO_ISDELETED == false).FirstOrDefaultAsync();
+
             if (produto == null)
             {
                 return NotFound();
             }
 
-            return View(produto);
+            var vm = new ProdutosViewModel { Produto = produto };
+
+            return View(vm);
         }
 
         public async Task<IActionResult> Create()
@@ -91,6 +87,13 @@ namespace Controle_Estoque_Basico.Controllers
             return View(vm);
         }
 
+        public async Task<IActionResult> ListaProdutosPartialAsync()
+        {
+            var lista = await _context.Produto.ToListAsync();
+
+            return PartialView("ListaProdutosPartial", lista);
+        }
+
         #endregion
 
         #region POSTS
@@ -101,13 +104,24 @@ namespace Controle_Estoque_Basico.Controllers
         {
             try
             {
-                string uniqueFileName = UploadedFile(model);
+                if (model.Produto.PRO_IDCATEGORIA > 0)
+                {
+                    string uniqueFileName = UploadedFile(model);
 
-                model.Produto.ImagemProdutoModel = uniqueFileName;
+                    if (string.IsNullOrEmpty(uniqueFileName))
+                        model.Produto.ImagemProdutoModel = "sem_foto.png";
+                    else
+                        model.Produto.ImagemProdutoModel = uniqueFileName;
 
-                _context.Add(model.Produto);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                    _context.Add(model.Produto);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                
+                model.Categorias = await _repCat.BuscaCategorias();
+
+                return View(model);
 
             }
             catch (Exception ex)
@@ -118,38 +132,35 @@ namespace Controle_Estoque_Basico.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PRO_ID, PRO_NOME, PRO_DESCRICAO, PRO_DATAENTRADA, PRO_VALIDADE, PRO_QUANTIDADE, PRO_IDCATEGORIA")] Produto produto)
+        public async Task<IActionResult> Edit(ProdutosViewModel model)
         {
-            if (id != produto.PRO_ID)
+            try
             {
-                return NotFound();
-            }
+                string uniqueFileName = UploadedFile(model);
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(produto);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProdutoExists(produto.PRO_ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                if (string.IsNullOrEmpty(uniqueFileName))
+                    model.Produto.ImagemProdutoModel = "sem_foto.png";
+                else
+                    model.Produto.ImagemProdutoModel = uniqueFileName;
+
+                _context.Update(model.Produto);
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
-
-            return View(produto);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProdutoExists(model.Produto.PRO_ID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> ExcluirVarios(string _registros)
         {
@@ -167,13 +178,13 @@ namespace Controle_Estoque_Basico.Controllers
                 for (int i = 0; i < aRegistros.Length; i++)
                 {
                     var produto = await _context.Produto.FindAsync(aRegistros[i]);
-                    
+
                     produto.PRO_ISDELETED = true;
-                   
+
                     await _context.SaveChangesAsync();
                 }
-                
-                return PartialView("ListaProdutosPartial", await _context.Produto.Include(x=>x.Categoria).Where(x => x.PRO_ISDELETED == false).ToListAsync());
+
+                return PartialView("ListaProdutosPartial", await _context.Produto.Include(x => x.Categoria).Where(x => x.PRO_ISDELETED == false).ToListAsync());
             }
             catch (Exception ex)
             {
@@ -194,8 +205,8 @@ namespace Controle_Estoque_Basico.Controllers
         public async Task<int> TotalProdutosEmEstoque()
         {
             return await _context.Produto.Where(x => x.PRO_ISDELETED == false).CountAsync();
-        }        
-        
+        }
+
         public async Task<IActionResult> InformarBaixaProduto(int _id, decimal _qtd)
         {
 
@@ -234,16 +245,15 @@ namespace Controle_Estoque_Basico.Controllers
                 await _repSpro.Salvar(saidaProduto);
             }
 
-            return PartialView("ListaProdutosPartial", await _context.Produto.Include(x=>x.Categoria).Where(x => x.PRO_ISDELETED == false).ToListAsync());
+            return PartialView("ListaProdutosPartial", await _context.Produto.Include(x => x.Categoria).Where(x => x.PRO_ISDELETED == false).ToListAsync());
         }
 
-        
         private string UploadedFile(ProdutosViewModel model)
         {
             string uniqueFileName = null;
 
             if (model.ImagemProdutoViewModel != null)
-            {                
+            {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Imagens");
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImagemProdutoViewModel.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);

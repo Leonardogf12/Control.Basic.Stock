@@ -16,10 +16,10 @@ namespace Controle_Estoque_Basico.ViewModels
         public Categoria Categoria { get; set; }        
 
         [DisplayName("Categorias")]
+        [Required(ErrorMessage = "Selecione uma categoria")]
         public ICollection<Categoria> Categorias { get; set; }
 
-        [Display(Name = "Upload")]
-        [Required(ErrorMessage = "Selecione a imagem para salvar")]
+        [Display(Name = "Upload")]       
         public IFormFile ImagemProdutoViewModel { get; set; }
 
     }

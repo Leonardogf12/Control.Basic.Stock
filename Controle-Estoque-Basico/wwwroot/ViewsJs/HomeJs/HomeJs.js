@@ -1,9 +1,11 @@
 ﻿
+
+
 $(document).ready(function () {
     CarregaCardQuantidadeEtoque();
     CarregaCardQuantidadeCategoria();
     CarregaCardQuantidadeSaidaProdutos();
-    FiltraCardProdutosAVencerIndex();
+    FiltraCardProdutosAVencerIndex();  
 });
 
 //CARD 1
@@ -56,7 +58,7 @@ function CarregaCardQuantidadeSaidaProdutos() {
         beforeSend: function () {
         },
         success: function (data) {
-
+            console.log(data);
             $("#quantidadeSaidaProdutos").html(data);
         },
         error: function (data) {
@@ -80,7 +82,7 @@ function FiltraCardProdutosAVencerIndex() {
         },
         success: function (data) {
 
-            $('#quantidadeProdutosAVencer').html(data);            
+            $('#quantidadeProdutosAVencer').html(data);                                                        
         },
         error: function (data) {
 
@@ -93,6 +95,8 @@ function FiltraCardProdutosAVencerIndex() {
 
 //CARD 4
 function FiltraCardProdutosAVencer() {
+
+    console.log("HOME.JS");
 
     var dataDe = "";
     var dataAte = "";
@@ -154,7 +158,11 @@ function FiltraCardProdutosAVencer() {
 
                     $('#quantidadeProdutosAVencer').html(data);
 
-                    ToastCustom(1, "success", "Filtro realizado com sucesso.");
+                    $('#dataDeFiltroInicial').html(ConverteStringToDate(dataDe));
+                    $('#dataAteFiltroInicial').html(ConverteStringToDate(dataAte));     
+
+                    console.log("HOME.JS");
+                    FiltraGraficoProdutosAVencer(dataDe, dataAte);
                 },
                 error: function (data) {
 
@@ -165,6 +173,7 @@ function FiltraCardProdutosAVencer() {
         }
     });
 }
+
 
 function ToastCustom(modelo, tipo, mensagem) {
 
@@ -232,3 +241,72 @@ function ToastCustom(modelo, tipo, mensagem) {
     }
 
 }
+
+function ConverteStringToDate(texto) {
+   
+    const [ano, mes, dia] = texto.split('-');
+    
+    return [dia, mes, ano].join('/');  
+}
+
+$(function CarregaGraficoProdutosAVencer() {
+
+    var areaChartData = {
+        labels: [], //*PERIODO
+        datasets: [
+            {
+                label: 'Quantidade',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: true,
+                pointColor: '#c94242',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: [] //*DADOS
+            }
+        ]
+    }
+
+    var areaChartOptions = {
+        maintainAspectRatio: false,
+        responsive: true,
+        legend: {
+            display: false
+        },
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    display: false,
+                }
+            }],
+            yAxes: [{
+                gridLines: {
+                    display: false,
+                }
+            }]
+        }
+    }
+
+    //*Isso obterá o primeiro nó retornado na coleção jQuery.
+    new Chart(areaChartCanvas, {
+        type: 'line',
+        data: areaChartData,
+        options: areaChartOptions
+    })
+
+    //*LINE CHART
+    var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
+    var lineChartOptions = $.extend(true, {}, areaChartOptions)
+    var lineChartData = $.extend(true, {}, areaChartData)
+    lineChartData.datasets[0].fill = false;
+    lineChartOptions.datasetFill = false
+
+    var lineChart = new Chart(lineChartCanvas, {
+        type: 'line',
+        data: lineChartData,
+        options: lineChartOptions
+    })
+})
+
+

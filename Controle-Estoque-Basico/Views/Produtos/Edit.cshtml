@@ -22,11 +22,12 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="col-md-12">
-                            <form asp-action="Edit">
+                            <form enctype="multipart/form-data" asp-action="Edit">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Produto.PRO_ID" />
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <div class="row">
                                     <div class="row col-md-12">
-                                        <input type="hidden" asp-for="Produto.PRO_ID" />
                                         <div class="form-group col-md-4 pr-md-1">
                                             <label asp-for="Produto.PRO_IDCATEGORIA" class="control-label">Categorias</label>
                                             <select asp-for="Produto.PRO_IDCATEGORIA" asp-items="@(new SelectList(Model.Categorias,"CAT_ID", "CAT_NOME"))" class="form-control select2" data-toggle="select2"></select>
@@ -45,7 +46,7 @@
                                             <label asp-for="Produto.PRO_QUANTIDADE" class="control-label"></label>
                                             <input asp-for="Produto.PRO_QUANTIDADE" class="form-control" />
                                             <span asp-validation-for="Produto.PRO_QUANTIDADE" class="text-danger"></span>
-                                        </div>                                                                      
+                                        </div>
                                         <div class="form-group col-md-2 pr-md-1">
                                             <label asp-for="Produto.PRO_DATAENTRADA" class="control-label"></label>
                                             <input asp-for="Produto.PRO_DATAENTRADA" class="form-control" type="date" />
@@ -55,6 +56,16 @@
                                             <label asp-for="Produto.PRO_VALIDADE" class="control-label"></label>
                                             <input asp-for="Produto.PRO_VALIDADE" class="form-control" type="date" />
                                             <span asp-validation-for="Produto.PRO_VALIDADE" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="ImagemProdutoViewModel" class="control-label"></label>
+                                                <div class="custom-file">
+                                                    <input asp-for="ImagemProdutoViewModel" class="custom-file-input" id="customFile">
+                                                    <label class="custom-file-label" for="customFile">Selecione o arquivo</label>
+                                                </div>
+                                                <span asp-validation-for="ImagemProdutoViewModel" class="text-danger"></span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-12 pr-md-1">
@@ -74,7 +85,15 @@
 </div>
 
 @section Scripts {
+
+    <script>
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    }
+}

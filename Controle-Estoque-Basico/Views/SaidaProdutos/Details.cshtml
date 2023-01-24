@@ -20,14 +20,14 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
+                   @* <div class="card-header">
                         <h3 class="card-title">Detalhamento de Saída do Produto</h3>
                     </div>
                 
                     <div class="card-body p-0">
                         <table class="table table-sm">
                             <thead>
-                                @* vazio *@
+                               
                             </thead>
                             <tbody>
                                 <tr>
@@ -56,10 +56,41 @@
                     <div class="row col-md-2 p-4">
                         <div>
                             <a asp-action="Index" class="btn bg-gradient-secondary">Voltar</a>
-                            @*<a asp-action="Edit" asp-route-id="@Model.SPRO_ID" class="btn btn-outline-primary">Editar</a>*@
                         </div>
                     </div>
-                    <!-- /.card-body -->
+                    *@
+                    <div class="col-md-12">
+                        <div class="card card-secondary card-outline">
+                            <div class="card-body box-profile">
+                                <div class="text-center">
+                                    <img class="profile-user-img img-fluid img-circle" src="@Url.Content("~/Imagens/"+Model.Produto.ImagemProdutoModel)" style="height:200px;width:auto;" />
+                                </div>
+
+                                <h3 class="text text-center">@Html.DisplayFor(model => model.Produto.PRO_NOME)</h3>
+
+                                <p class="text-muted text-center">@Html.DisplayFor(model => model.Produto.PRO_DESCRICAO)</p>
+
+                                <ul class="list-group list-group-unbordered mb-3">
+                                    
+                                     <li class="list-group-item">
+                                        <b>@Html.DisplayNameFor(model => model.Categoria.CAT_NOME)</b> <a class="float-right">@Html.DisplayFor(model => model.Categoria.CAT_NOME)</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b>@Html.DisplayNameFor(model => model.SPRO_QUANTIDADE)</b> <a class="float-right">@Html.DisplayFor(model => model.SPRO_QUANTIDADE)</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b>@Html.DisplayNameFor(model => model.SPRO_DATASAIDA)</b> <a class="float-right">@Html.DisplayFor(model => model.SPRO_DATASAIDA)</a>
+                                    </li>                                    
+                                </ul>
+                            </div>
+                          @*  <div class="row col-md-12 mt-3">
+                                <div class="btn">
+                                    <a asp-action="Index" class="btn bg-gradient-secondary">Voltar</a>
+                                    <a asp-action="Edit" asp-route-id="@Model.Produto.PRO_ID" class="btn btn-outline-primary">Editar</a>
+                                </div>
+                            </div>*@
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
