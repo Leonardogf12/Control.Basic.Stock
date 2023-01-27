@@ -4,27 +4,66 @@
     ViewData["Title"] = "Home";
 }
 
-<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
+
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6">
+                <div class="col-md-12">
                     <h1>Dashboard</h1>
                 </div>
+            </div>
+            <div class="card bg-light">
+                <div class="row col-md-12">
+                    <div class="card-header mt-2">
+                        <div class="btn-group">
+                            <button onclick="FiltroHomeGeral()" class="btn bg-gradient-secondary">Filtro</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row m-auto" style="justify-content: end">
+                            <p style="font-size:large; font-weight:bold">Período:&nbsp;&nbsp;</p>
+                            <p style="font-size:large" id="dataDeFiltroInicial">@Model.DataDe.ToShortDateString()</p>
+                            <p style="font-size:large">&nbsp; - &nbsp;</p>
+                            <p style="font-size:large" id="dataAteFiltroInicial">@Model.DataAte.ToShortDateString()</p>
+                        </div>
+                    </div>
+                </div>
+                @* <div class="card-body collapse">
+                    <div class="row">
+                    <div class="form-group col-md-3 pr-md-1">
+                    <label class="control-label">Categoria</label>
+                    <select class="form-control select2" data-toggle="select2"></select>
+                    </div>
+                    <div class="form-group col-md-3 pr-md-1">
+                    <label class="control-label">Produto</label>
+                    <select class="form-control select2" data-toggle="select2"></select>
+                    </div>
+                    <div class="form-group col-md-2 pr-md-1">
+                    <label class="control-label">Data Início</label>
+                    <input class="form-control" type="date" />
+                    </div>
+                    <div class="form-group col-md-2 pr-md-1">
+                    <label class="control-label">Data Fim</label>
+                    <input class="form-control" type="date" />
+                    </div>
+                    <div class="form-group col-md-12 pr-md-1 pt-3">
+                    <a data-card-widget="collapse" class="btn bg-gradient-danger">Cancelar</a>
+                    <input type="submit" value="Filtrar" class="btn btn-outline-primary" />
+                    </div>
+                    </div>
+                </div>*@
+
             </div>
         </div>
     </section>
 
-    <!-- Main content -->
     <section class="content">
-        <div class="container-fluid">
-            <!-- Small boxes (Stat box) -->
+        <div class="container-fluid">          
             <div class="row">
 
-                @* QUANTIDADE DE PRODUTOS NO ESTOQUE *@
-                <div class="col-lg-3 col-6">
+                @* QUANTIDADE DE PRODUTOS NO ESTOQUE - CARD 1*@
+                <div class="col-lg-6 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
                             <h3 id="quantidadeProdutos"></h3>
@@ -36,25 +75,10 @@
                         <a asp-area="" asp-controller="Produtos" asp-action="Index" class="small-box-footer">Sobre <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-                @* QUANTIDADE DE PRODUTOS NO ESTOQUE FIM *@
+                @* QUANTIDADE DE PRODUTOS NO ESTOQUE FIM *@          
 
-                @* QUANTIDADE DE CATEGORIAS *@
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-success">
-                        <div class="inner">
-                            <h3 id="quantidadeCategorias"></h3>
-                            <p>Categorias</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-bag"></i>
-                        </div>
-                        <a asp-area="" asp-controller="Categorias" asp-action="Index" class="small-box-footer">Sobre <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                @* QUANTIDADE DE CATEGORIAS FIM *@
-
-                @* SAIDA DE PRODUTOS *@
-                <div class="col-lg-3 col-6">
+                @* SAIDA DE PRODUTOS - CARD 2*@
+                <div class="col-lg-6 col-6">
                     <div class="small-box bg-warning">
                         <div class="inner">
                             <h3 id="quantidadeSaidaProdutos"></h3>
@@ -68,341 +92,34 @@
                 </div>
                 @* SAIDA DE PRODUTOS FIM *@
 
-                @* A VENCER *@
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-
-                            <div class="row" style="justify-content:space-between">
-                                <h3 class="text ml-2" id="quantidadeProdutosAVencer"></h3>
-                                <a class="small-box-footer" onclick="FiltraCardProdutosAVencer()"><i class="fa fa-filter mr-1" style="cursor:pointer; color:white"></i></a>
-                            </div>
-
-                            <div class="row m-0 rigth">
-                                <p>Á vencer&nbsp;</p>
-                                <div class="row mr-1 mt-1" style="margin-left: auto;">
-                                    <p style="font-size:small">Período:&nbsp;&nbsp;</p>
-                                    <p style="font-size:small" id="dataDeFiltroInicial">@Model.DataDe.ToShortDateString()</p>
-                                    <p style="font-size:small">&nbsp; - &nbsp;</p>
-                                    <p style="font-size:small" id="dataAteFiltroInicial">@Model.DataAte.ToShortDateString()</p>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-pie-graph"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">Sobre <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                @* A VENDCER FIM *@
-
-                @* GRAFICO A VENCER 01*@
-
+                @* GRAFICO A VENCER - GRAF 1*@
                 <div class="col-md-12">
-
-                    <div class="box bg-danger">
-                        <div class="card card-danger">
-                            <div class="card-header">
-                                <div class="row">
-                                    <h3 class="card-title">Gráfico de Produtos a vencer</h3>
-                                    <div class="row mr-1 mt-1" style="margin-left: auto;">
-                                        <p style="font-size:small">Período:&nbsp;&nbsp;</p>
-                                        <p style="font-size:small" id="dataDeGraf">@Model.DataDe.ToShortDateString()</p>
-                                        <p style="font-size:small">&nbsp; - &nbsp;</p>
-                                        <p style="font-size:small" id="dataAteGraf">@Model.DataAte.ToShortDateString()</p>
-                                    </div>
-                                </div>
-
-
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" onclick="FiltraGraficoProdutosAVencer()">
-                                        <i class="fas fa-filter"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                </div>
+                    <div class="card card-danger">
+                        <div class="card-header">
+                            <h3 class="card-title">Gráfico de Produtos a vencer</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
                             </div>
-                            <div class="card-body">
-                                <div class="chart">
-                                    <canvas id="lineChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                                </div>
-                            </div>
-
                         </div>
+                        <div class="card-body">
+                            <div class="chart">
+                                <canvas id="lineChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-
                 @* GRAFICO A VENCER FIM *@
 
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
+  
 </div>
-<!-- /.content-wrapper -->
+
 
 <script src="~/theme/plugins/jquery/jquery.min.js"></script>
 <script src="~/ViewsJs/HomeJs/HomeJs.js"></script>
 
-<script>
-
-    var areaChartCanvas = "";
-
-    $(document).ready(function() {
-        //areaChartCanvas = $('#areaChart').get(0).getContext('2d');
-        FiltraGraficoProdutosAVencerIndex();
-    });
-
-
-    function FiltraGraficoProdutosAVencer() {
-
-        console.log("INDEX");
-
-        var dataDe = "";
-        var dataAte = "";
-
-        Swal.fire({
-            title: '<h3>Produtos á vencer</h3>',
-            icon: 'info',
-            html: 'Informe Data Início e Fim para saber a ' +
-                'quantidade de produtos a vencer. </br>' +
-                '</br>Data De: <input id="dataDe" type="date"/><p>' +
-                '</br>Data Até: <input id="dataAte" type="date"/>',
-            showCancelButton: true,
-            focusConfirm: false,
-            confirmButtonText: 'Confirmar',
-            cancelButtonText: 'Cancelar',
-            cancelButtonAriaLabel: 'Thumbs down',
-            preConfirm: (valor) => {
-
-                dataDe = $("#dataDe").val();
-                dataAte = $("#dataAte").val();
-
-                if (dataDe == "") {
-                    ToastCustom(1, "error", 'Digite uma data início.');
-                    return false;
-                }
-                if (dataAte == "") {
-                    ToastCustom(1, "error", 'Digite uma data fim.');
-                    return false;
-                }
-
-                let isValidDateDe = Date.parse(dataDe);
-                let isValidDateAte = Date.parse(dataAte);
-
-                if (isNaN(isValidDateDe)) {
-                    ToastCustom(1, "error", 'Data início não válida.');
-                    return false;
-                }
-
-                if (isNaN(isValidDateAte)) {
-                    ToastCustom(1, "error", 'Data fim não válida.');
-                    return false;
-                }
-
-            },
-        }).then((result) => {
-
-
-            if (result.isConfirmed) {
-
-                var url = "/Home/CarregaDadosGraficoDeLinhasComFiltro";
-
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    datatype: 'JSON',
-                    data: { _dataDe: dataDe, _dataAte: dataAte },
-                    beforeSend: function() {
-                    },
-                    success: function(result) {
-
-                        for (var i = 0; i < result.length; i++) {
-                            var shortCode = result[i].shortCode;
-                            var m = result[i].meses;
-                            var v = result[i].valores;
-                        }
-
-                        console.log("INDEX");
-
-                         $('#dataDeGraf').html(ConverteStringToDate(dataDe));
-                         $('#dataAteGraf').html(ConverteStringToDate(dataAte));  
-
-                        CarregaDadosGraficoDeLinhas(m, v);
-                    },
-                    error: function(data) {
-
-                        ToastCustom(1, "error", data.responseJSON);
-
-                    }
-                });
-            }
-        });
-    }
-
-    function FiltraGraficoProdutosAVencerIndex() {
-
-        console.log("reload index")
-
-        var url = "/Home/CarregaDadosGraficoDeLinhasComFiltro";
-
-        $.ajax({
-            url: url,
-            type: 'POST',
-            datatype: 'JSON',
-            data: { _dataDe: "", _dataAte: "" },
-            beforeSend: function() {
-            },
-            success: function(result) {
-
-                for (var i = 0; i < result.length; i++) {
-                    var shortCode = result[i].shortCode;
-                    var m = result[i].meses;
-                    var v = result[i].valores;
-                }
-
-                console.log("FUNCAO - FiltraGraficoProdutosAVencerIndex()");
-                console.log(m);
-                console.log(v);
-                console.log("---------------------------------------------");
-                 
-                CarregaDadosGraficoDeLinhas(m, v);
-            },
-            error: function(data) {
-
-                console.log(4);
-
-                ToastCustom(1, "error", data.responseJSON);
-
-            }
-        });
-    }
-
-    function CarregaDadosGraficoDeLinhas(meses, valores) {
-        //['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
-
-        console.log("INDEX");
-
-
-        var areaChartData = {
-            labels: meses, //*PERIODO
-            datasets: [
-                {
-                    label: 'Quantidade',
-                    backgroundColor: 'rgba(60,141,188,0.9)',
-                    borderColor: 'rgba(60,141,188,0.8)',
-                    pointRadius: true,
-                    pointColor: '#c94242',
-                    pointStrokeColor: 'rgba(60,141,188,1)',
-                    pointHighlightFill: '#fff',
-                    pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data: valores //*DADOS
-                }
-            ]
-        }
-
-        var areaChartOptions = {
-            maintainAspectRatio: false,
-            responsive: true,
-            legend: {
-                display: false
-            },
-            scales: {
-                xAxes: [{
-                    gridLines: {
-                        display: false,
-                    }
-                }],
-                yAxes: [{
-                    gridLines: {
-                        display: false,
-                    }
-                }]
-            }
-        }
-
-        //*Isso obterá o primeiro nó retornado na coleção jQuery.
-        new Chart(areaChartCanvas, {
-            type: 'line',
-            data: areaChartData,
-            options: areaChartOptions
-        })
-
-        //*LINE CHART
-        var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
-        var lineChartOptions = $.extend(true, {}, areaChartOptions)
-        var lineChartData = $.extend(true, {}, areaChartData)
-        lineChartData.datasets[0].fill = false;
-        lineChartOptions.datasetFill = false
-
-        var lineChart = new Chart(lineChartCanvas, {
-            type: 'line',
-            data: lineChartData,
-            options: lineChartOptions
-        })
-    }
-
-
-    $(function CarregaGraficoProdutosAVencer() {
-
-        var areaChartData = {
-            labels: [], //*PERIODO
-            datasets: [
-                {
-                    label: 'Quantidade',
-                    backgroundColor: 'rgba(60,141,188,0.9)',
-                    borderColor: 'rgba(60,141,188,0.8)',
-                    pointRadius: true,
-                    pointColor: '#c94242',
-                    pointStrokeColor: 'rgba(60,141,188,1)',
-                    pointHighlightFill: '#fff',
-                    pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data: [] //*DADOS
-                }
-            ]
-        }
-
-        var areaChartOptions = {
-            maintainAspectRatio: false,
-            responsive: true,
-            legend: {
-                display: false
-            },
-            scales: {
-                xAxes: [{
-                    gridLines: {
-                        display: false,
-                    }
-                }],
-                yAxes: [{
-                    gridLines: {
-                        display: false,
-                    }
-                }]
-            }
-        }
-
-        //*Isso obterá o primeiro nó retornado na coleção jQuery.
-        new Chart(areaChartCanvas, {
-            type: 'line',
-            data: areaChartData,
-            options: areaChartOptions
-        })
-
-        //*LINE CHART
-        var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
-        var lineChartOptions = $.extend(true, {}, areaChartOptions)
-        var lineChartData = $.extend(true, {}, areaChartData)
-        lineChartData.datasets[0].fill = false;
-        lineChartOptions.datasetFill = false
-
-        var lineChart = new Chart(lineChartCanvas, {
-            type: 'line',
-            data: lineChartData,
-            options: lineChartOptions
-        })
-    })
-
-</script>

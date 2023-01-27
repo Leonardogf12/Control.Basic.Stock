@@ -137,10 +137,7 @@ namespace Controle_Estoque_Basico.Controllers
                 throw new Exception(ex.Message);
             }
 
-        }
-
-
-
+        }        
 
         public static IEnumerable<(string Month, int Year)> MesesIntervalo(DateTime startDate, DateTime endDate)
         {

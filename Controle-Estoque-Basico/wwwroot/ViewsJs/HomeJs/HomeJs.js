@@ -1,11 +1,10 @@
 ﻿
-
+var areaChartCanvas = "";
 
 $(document).ready(function () {
+    FiltraGraficoProdutosAVencerIndex();
     CarregaCardQuantidadeEtoque();
-    CarregaCardQuantidadeCategoria();
     CarregaCardQuantidadeSaidaProdutos();
-    FiltraCardProdutosAVencerIndex();  
 });
 
 //CARD 1
@@ -29,26 +28,6 @@ function CarregaCardQuantidadeEtoque() {
 }
 
 //CARD 2
-function CarregaCardQuantidadeCategoria() {
-
-    $.ajax({
-        url: '/Categorias/TotalCategorias/',
-        type: 'GET',
-        datatype: 'JSON',
-        beforeSend: function () {
-        },
-        success: function (data) {
-
-            $("#quantidadeCategorias").html(data);
-        },
-        error: function (data) {
-
-            ToastCustom("error", data.responseText);
-        }
-    });
-}
-
-//CARD 3
 function CarregaCardQuantidadeSaidaProdutos() {
 
     $.ajax({
@@ -68,46 +47,45 @@ function CarregaCardQuantidadeSaidaProdutos() {
     });
 }
 
-//CARD 4
-function FiltraCardProdutosAVencerIndex() {
+//*CARREGA O GRAFICO COM O PERIODO CHUMBADO DE UM MES PARA TRAZ E UM MES PARA FRENTE.
+function FiltraGraficoProdutosAVencerIndex() {
 
-    var url = "/Home/TotalProdutosAVencer";
-
+    //*CARREGA GRAFICO DE PRODUTOS A VENCER POR PERIODO POREM (FILTRO CHUMBADO).
     $.ajax({
-        url: url,
+        url: "/Home/CarregaDadosGraficoDeLinhasComFiltro",
         type: 'POST',
         datatype: 'JSON',
-        data: { _dataDe: "", _dataAte: ""},
+        data: { _dataDe: "", _dataAte: "" },
         beforeSend: function () {
         },
-        success: function (data) {
+        success: function (result) {
 
-            $('#quantidadeProdutosAVencer').html(data);                                                        
+            for (var i = 0; i < result.length; i++) {
+                var shortCode = result[i].shortCode;
+                var m = result[i].meses;
+                var v = result[i].valores;
+            }
+
+            CarregaDadosGraficoDeLinhas(m, v);
         },
         error: function (data) {
-
             ToastCustom(1, "error", data.responseJSON);
-
         }
     });
-
 }
 
-//CARD 4
-function FiltraCardProdutosAVencer() {
+//*FILTRO GERAL DA HOME.
+function FiltroHomeGeral() {
 
-    console.log("HOME.JS");
-
-    var dataDe = "";
-    var dataAte = "";
+    var de = "";
+    var ate = "";
 
     Swal.fire({
-        title: '<h3>Produtos á vencer</h3>',
+        title: '<h3>Filtro Geral</h3>',
         icon: 'info',
-        html: 'Informe Data Início e Fim para saber a ' +
-            'quantidade de produtos a vencer. </br>' +
-            '</br>Data De: <input id="dataDe" type="date"/><p>' +
-            '</br>Data Até: <input id="dataAte" type="date"/>',
+        html: 'Informe a data início e data fim para filtrar os cadrs. </br> ' +
+            '</br>De: <input id="idDataDe" type="date"/><p>' +
+            '</br>Até: <input id="idDataAte" type="date"/>',
         showCancelButton: true,
         focusConfirm: false,
         confirmButtonText: 'Confirmar',
@@ -115,20 +93,20 @@ function FiltraCardProdutosAVencer() {
         cancelButtonAriaLabel: 'Thumbs down',
         preConfirm: (valor) => {
 
-            dataDe = $("#dataDe").val();
-            dataAte = $("#dataAte").val();
+            de = $("#idDataDe").val();
+            ate = $("#idDataAte").val();
 
-            if (dataDe == "") {
+            if (de == "") {
                 ToastCustom(1, "error", 'Digite uma data início.');
                 return false;
             }
-            if (dataAte == "") {
+            if (ate == "") {
                 ToastCustom(1, "error", 'Digite uma data fim.');
                 return false;
             }
 
-            let isValidDateDe = Date.parse(dataDe);
-            let isValidDateAte = Date.parse(dataAte);
+            let isValidDateDe = Date.parse(de);
+            let isValidDateAte = Date.parse(ate);
 
             if (isNaN(isValidDateDe)) {
                 ToastCustom(1, "error", 'Data início não válida.');
@@ -145,24 +123,49 @@ function FiltraCardProdutosAVencer() {
 
         if (result.isConfirmed) {
 
-            var url = "/Home/TotalProdutosAVencer";
-
+            //*AJAX CARREGA QUANTIDADE NO CARD 4 DE PRODUTOS A VENCER.
             $.ajax({
-                url: url,
+                url: "/Home/TotalProdutosAVencer",
                 type: 'POST',
                 datatype: 'JSON',
-                data: { _dataDe: dataDe, _dataAte: dataAte },
+                data: { _dataDe: de, _dataAte: ate },
                 beforeSend: function () {
                 },
                 success: function (data) {
 
                     $('#quantidadeProdutosAVencer').html(data);
 
-                    $('#dataDeFiltroInicial').html(ConverteStringToDate(dataDe));
-                    $('#dataAteFiltroInicial').html(ConverteStringToDate(dataAte));     
+                    $('#dataDeFiltroInicial').html(ConverteStringToDate(de));
+                    $('#dataAteFiltroInicial').html(ConverteStringToDate(ate));
 
-                    console.log("HOME.JS");
-                    FiltraGraficoProdutosAVencer(dataDe, dataAte);
+                },
+                error: function (data) {
+
+                    ToastCustom(1, "error", data.responseJSON);
+
+                }
+            });
+
+            //*AJAX CARREGA GRAFICO DE PRODUTOS A VENCER POR PERIODO.
+            $.ajax({
+                url: "/Home/CarregaDadosGraficoDeLinhasComFiltro",
+                type: 'POST',
+                datatype: 'JSON',
+                data: { _dataDe: de, _dataAte: ate },
+                beforeSend: function () {
+                },
+                success: function (result) {
+
+                    for (var i = 0; i < result.length; i++) {
+                        var shortCode = result[i].shortCode;
+                        var m = result[i].meses;
+                        var v = result[i].valores;
+                    }
+
+                    $('#dataDeGraf').html(ConverteStringToDate(de));
+                    $('#dataAteGraf').html(ConverteStringToDate(ate));
+
+                    CarregaDadosGraficoDeLinhas(m, v);
                 },
                 error: function (data) {
 
@@ -174,7 +177,130 @@ function FiltraCardProdutosAVencer() {
     });
 }
 
+//*PREENCHE DADOS NO GRAFICO.
+function CarregaDadosGraficoDeLinhas(meses, valores) {
+   
+    var areaChartData = {
+        labels: meses, //*PERIODO
+        datasets: [
+            {
+                label: 'Quantidade',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: true,
+                pointColor: '#c94242',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: valores //*DADOS
+            }
+        ]
+    }
 
+    var areaChartOptions = {                     
+        maintainAspectRatio: false,
+        responsive: true,
+        legend: {
+            display: false
+        },
+        
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    display: false,
+                }
+            }],
+            yAxes: [{
+                gridLines: {
+                    display: false,
+                }
+            }]
+        }
+    }
+
+    //*Isso obterá o primeiro nó retornado na coleção jQuery.
+    new Chart(areaChartCanvas, {
+        type: 'line',
+        data: areaChartData,
+        options: areaChartOptions
+    })
+
+    //*LINE CHART
+    var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
+    var lineChartOptions = $.extend(true, {}, areaChartOptions)
+    var lineChartData = $.extend(true, {}, areaChartData)
+    lineChartData.datasets[0].fill = false;
+    lineChartOptions.datasetFill = false
+
+    var lineChart = new Chart(lineChartCanvas, {
+        type: 'line',
+        data: lineChartData,        
+        options: lineChartOptions
+    })
+}
+
+//*DESENHO DO GRÁFICO.
+$(function CarregaGraficoProdutosAVencer() {
+
+    var areaChartData = {
+        labels: [], //*PERIODO
+        datasets: [
+            {
+                label: 'Quantidade',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: true,
+                pointColor: '#c94242',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: [] //*DADOS
+            }
+        ]
+    }
+
+    var areaChartOptions = {
+        maintainAspectRatio: false,
+        responsive: true,
+        legend: {
+            display: false
+        },
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    display: false,
+                }
+            }],
+            yAxes: [{
+                gridLines: {
+                    display: false,
+                }
+            }]
+        }
+    }
+
+    //*Isso obterá o primeiro nó retornado na coleção jQuery.
+    new Chart(areaChartCanvas, {
+        type: 'line',
+        data: areaChartData,
+        options: areaChartOptions
+    })
+
+    //*LINE CHART
+    var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
+    var lineChartOptions = $.extend(true, {}, areaChartOptions)
+    var lineChartData = $.extend(true, {}, areaChartData)
+    lineChartData.datasets[0].fill = false;
+    lineChartOptions.datasetFill = false
+
+    var lineChart = new Chart(lineChartCanvas, {
+        type: 'line',
+        data: lineChartData,
+        options: lineChartOptions
+    })
+})
+
+//*TOAST ALERT - CUSTOMIZADO.
 function ToastCustom(modelo, tipo, mensagem) {
 
     var Toast = Swal.mixin({
@@ -242,6 +368,7 @@ function ToastCustom(modelo, tipo, mensagem) {
 
 }
 
+//*CONVERSOR DE DATAS.
 function ConverteStringToDate(texto) {
    
     const [ano, mes, dia] = texto.split('-');
@@ -249,64 +376,5 @@ function ConverteStringToDate(texto) {
     return [dia, mes, ano].join('/');  
 }
 
-$(function CarregaGraficoProdutosAVencer() {
-
-    var areaChartData = {
-        labels: [], //*PERIODO
-        datasets: [
-            {
-                label: 'Quantidade',
-                backgroundColor: 'rgba(60,141,188,0.9)',
-                borderColor: 'rgba(60,141,188,0.8)',
-                pointRadius: true,
-                pointColor: '#c94242',
-                pointStrokeColor: 'rgba(60,141,188,1)',
-                pointHighlightFill: '#fff',
-                pointHighlightStroke: 'rgba(60,141,188,1)',
-                data: [] //*DADOS
-            }
-        ]
-    }
-
-    var areaChartOptions = {
-        maintainAspectRatio: false,
-        responsive: true,
-        legend: {
-            display: false
-        },
-        scales: {
-            xAxes: [{
-                gridLines: {
-                    display: false,
-                }
-            }],
-            yAxes: [{
-                gridLines: {
-                    display: false,
-                }
-            }]
-        }
-    }
-
-    //*Isso obterá o primeiro nó retornado na coleção jQuery.
-    new Chart(areaChartCanvas, {
-        type: 'line',
-        data: areaChartData,
-        options: areaChartOptions
-    })
-
-    //*LINE CHART
-    var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
-    var lineChartOptions = $.extend(true, {}, areaChartOptions)
-    var lineChartData = $.extend(true, {}, areaChartData)
-    lineChartData.datasets[0].fill = false;
-    lineChartOptions.datasetFill = false
-
-    var lineChart = new Chart(lineChartCanvas, {
-        type: 'line',
-        data: lineChartData,
-        options: lineChartOptions
-    })
-})
 
 
