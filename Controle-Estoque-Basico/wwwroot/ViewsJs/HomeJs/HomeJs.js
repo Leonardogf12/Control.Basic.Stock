@@ -3,12 +3,13 @@ var areaChartCanvas = "";
 
 $(document).ready(function () {
     FiltraGraficoProdutosAVencerIndex();
-    CarregaCardQuantidadeEtoque();
+    CarregaCardQuantidadeEstoque();
     CarregaCardQuantidadeSaidaProdutos();
+    CarregaCardQuantidadeProdutosEstoqueBaixo();  
 });
 
 //CARD 1
-function CarregaCardQuantidadeEtoque() {
+function CarregaCardQuantidadeEstoque() {
 
     $.ajax({
         url: '/Produtos/TotalProdutosEmEstoque/',
@@ -46,6 +47,27 @@ function CarregaCardQuantidadeSaidaProdutos() {
         }
     });
 }
+
+//*CARD 3
+function CarregaCardQuantidadeProdutosEstoqueBaixo() {
+
+    $.ajax({
+        url: '/Produtos/TotalProdutosComEstoqueBaixo/',
+        type: 'GET',
+        datatype: 'JSON',
+        beforeSend: function () {
+        },
+        success: function (data) {
+
+            $("#quantidadeProdutosComEstoqueBaixo").html(data);
+        },
+        error: function (data) {
+
+            ToastCustom("error", data.responseText);
+        }
+    });
+}
+
 
 //*CARREGA O GRAFICO COM O PERIODO CHUMBADO DE UM MES PARA TRAZ E UM MES PARA FRENTE.
 function FiltraGraficoProdutosAVencerIndex() {
@@ -375,6 +397,8 @@ function ConverteStringToDate(texto) {
     
     return [dia, mes, ano].join('/');  
 }
+
+
 
 
 

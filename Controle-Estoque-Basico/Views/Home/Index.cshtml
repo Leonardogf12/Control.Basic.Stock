@@ -63,7 +63,7 @@
             <div class="row">
 
                 @* QUANTIDADE DE PRODUTOS NO ESTOQUE - CARD 1*@
-                <div class="col-lg-6 col-6">
+                <div class="col-lg-4 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
                             <h3 id="quantidadeProdutos"></h3>
@@ -78,8 +78,8 @@
                 @* QUANTIDADE DE PRODUTOS NO ESTOQUE FIM *@          
 
                 @* SAIDA DE PRODUTOS - CARD 2*@
-                <div class="col-lg-6 col-6">
-                    <div class="small-box bg-warning">
+                <div class="col-lg-4 col-6">
+                    <div class="small-box bg-success">
                         <div class="inner">
                             <h3 id="quantidadeSaidaProdutos"></h3>
                             <p>Saída</p>
@@ -91,6 +91,21 @@
                     </div>
                 </div>
                 @* SAIDA DE PRODUTOS FIM *@
+
+                @* PRODUTOS COM ESTOQUE BAIXO - CARD 3*@
+                <div class="col-lg-4 col-6">
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3 id="quantidadeProdutosComEstoqueBaixo"></h3>
+                            <p>Produtos c/ Estoque Baixo</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-bag"></i>
+                        </div>
+                        <a asp-area="" asp-controller="Produtos" asp-action="ListaProdutosEstoqueBaixo" class="small-box-footer">Sobre<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                @* PRODUTOS COM ESTOQUE BAIXO FIM *@
 
                 @* GRAFICO A VENCER - GRAF 1*@
                 <div class="col-md-12">

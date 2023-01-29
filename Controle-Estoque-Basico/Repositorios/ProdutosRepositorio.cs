@@ -26,6 +26,11 @@ namespace Controle_Estoque_Basico.Repositorios
                     _context.Produto.Add(_registro);
                     await _context.SaveChangesAsync();
                 }
+                else
+                {
+                    _context.Update(_registro);
+                    await _context.SaveChangesAsync();
+                }
 
                 return _registro;
             }

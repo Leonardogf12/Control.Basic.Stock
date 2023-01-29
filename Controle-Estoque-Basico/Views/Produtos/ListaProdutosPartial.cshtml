@@ -12,7 +12,7 @@
                     </label>
                 </div>
             </th>
-             <th>
+            <th>
                 <p>Imagem</p>
             </th>
             <th>
@@ -26,6 +26,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PRO_QUANTIDADE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PRO_ESTOQUEMINIMO)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PRO_DATAENTRADA)
@@ -51,12 +54,12 @@
                         </label>
                     </div>
                 </td>
-                <td>  
-                    <img src="~/Imagens/@item.ImagemProdutoModel"   
-                         class="rounded-circle"   
-                         height="40" width="40"   
-                         asp-append-version="true" />                     
-                </td> 
+                <td>
+                    <img src="~/Imagens/@item.ImagemProdutoModel"
+                     class="rounded-circle"
+                     height="40" width="40"
+                     asp-append-version="true" />
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Categoria.CAT_NOME)
                 </td>
@@ -70,15 +73,22 @@
                     @Html.DisplayFor(modelItem => item.PRO_QUANTIDADE)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.PRO_ESTOQUEMINIMO)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.PRO_DATAENTRADA)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PRO_VALIDADE)
                 </td>
                 <td>
-                    @if (item.PRO_STATUS)
+                    @if (item.PRO_QUANTIDADE == 0)
                     {
                         <span title="Vendido" class="badge bg-success">Vendido</span>
+                    }
+                    else if (item.PRO_QUANTIDADE <= item.PRO_ESTOQUEMINIMO)
+                    {
+                        <span title="Estoque Baixo" class="badge bg-warning">Estoque Baixo</span>
                     }
                     else
                     {
@@ -92,12 +102,12 @@
                     <a title="Excluir" class="btn-md" onclick="ExcluirProdutosPartial(@item.PRO_ID)"> <i class="fas fa-trash" style="cursor:pointer;"></i></a> &nbsp;
 
                     @if (item.PRO_QUANTIDADE > 0)
-                    {                        
-                        <a title="Baixar Estoque" class="btn-md" onclick="ShowSwalBaixaProdutos(@item.PRO_ID)"><i class="fa fa-minus-circle" style="cursor: pointer;"></i></a>                        
+                    {
+                        <a title="Baixar Estoque" class="btn-md" onclick="ShowSwalBaixaProdutos(@item.PRO_ID)"><i class="fa fa-minus-circle" style="cursor: pointer;"></i></a>
                     }
                     else
-                    {                      
-                        <a title="Baixar Estoque" class="btn-md" ><i class="fa fa-minus-circle" style="color:grey;"></i></a>
+                    {
+                        <a title="Baixar Estoque" class="btn-md"><i class="fa fa-minus-circle" style="color:grey;"></i></a>
                     }
                 </td>
             </tr>

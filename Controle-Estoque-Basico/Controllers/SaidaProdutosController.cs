@@ -16,11 +16,13 @@ namespace Controle_Estoque_Basico.Controllers
         private readonly AppDbContext _context;
 
         private readonly ISaidaProdutosRepositorio _repSpro;
+        private readonly IProdutosRepositorio _repPro;
 
-        public SaidaProdutosController(AppDbContext context, ISaidaProdutosRepositorio repSpro)
+        public SaidaProdutosController(AppDbContext context, ISaidaProdutosRepositorio repSpro, IProdutosRepositorio repPro)
         {
             _context = context;
             _repSpro = repSpro;
+            _repPro = repPro;
         }
 
 
@@ -31,134 +33,73 @@ namespace Controle_Estoque_Basico.Controllers
         }
 
 
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var saidaProduto = await _context.SaidaProduto
-                .Include(x => x.Produto)
-                .Include(x => x.Categoria)
-                .FirstOrDefaultAsync(m => m.SPRO_ID == id);
-
-            if (saidaProduto == null)
-            {
-                return NotFound();
-            }
-
-            return View(saidaProduto);
-        }
-
-
-        public IActionResult Create()
-        {
-            ViewData["PRO_IDCATEGORIA"] = new SelectList(_context.Categoria, "CAT_ID", "CAT_NOME");
-            return View();
-        }
-
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PRO_ID,PRO_NOME,PRO_DESCRICAO,PRO_QUANTIDADE,PRO_DATAENTRADA,PRO_VALIDADE,PRO_IDCATEGORIA,PRO_ISDELETED")] Produto produto)
+        public async Task<IActionResult> ExcluirVarios(string _registros)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(produto);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["PRO_IDCATEGORIA"] = new SelectList(_context.Categoria, "CAT_ID", "CAT_NOME", produto.PRO_IDCATEGORIA);
-            return View(produto);
-        }
+                string mensagem = string.Empty;
 
-        // GET: SaidaProdutos/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+                string[] separators = { "," };
+                string[] aAux;
+                int[] aRegistros;
 
-            var produto = await _context.Produto.FindAsync(id);
-            if (produto == null)
-            {
-                return NotFound();
-            }
-            ViewData["PRO_IDCATEGORIA"] = new SelectList(_context.Categoria, "CAT_ID", "CAT_NOME", produto.PRO_IDCATEGORIA);
-            return View(produto);
-        }
+                aAux = _registros.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                aRegistros = Array.ConvertAll(aAux, int.Parse);
 
-        // POST: SaidaProdutos/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PRO_ID,PRO_NOME,PRO_DESCRICAO,PRO_QUANTIDADE,PRO_DATAENTRADA,PRO_VALIDADE,PRO_IDCATEGORIA,PRO_ISDELETED")] Produto produto)
-        {
-            if (id != produto.PRO_ID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                for (int i = 0; i < aRegistros.Length; i++)
                 {
-                    _context.Update(produto);
+                    var saidaProduto = await _context.SaidaProduto.FindAsync(aRegistros[i]);
+
+                    saidaProduto.SPRO_ISDELETED = true;
+
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                return PartialView("ListaSaidaProdutosPartial", await _context.SaidaProduto.Include(x => x.Produto).Include(x => x.Categoria).Where(x => x.SPRO_ISDELETED == false).ToListAsync());
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                return Json(ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> DesfazerVenda(string _registros)
+        {
+            try
+            {
+                string mensagem = string.Empty;
+
+                string[] separators = { "," };
+                string[] aAux;
+                int[] aRegistros;
+
+                aAux = _registros.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                aRegistros = Array.ConvertAll(aAux, int.Parse);
+
+                for (int i = 0; i < aRegistros.Length; i++)
                 {
-                    if (!ProdutoExists(produto.PRO_ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    var saidaProduto = await _context.SaidaProduto.FindAsync(aRegistros[i]);
+
+                    Produto produto = new Produto();
+                    produto = await _context.Produto.Where(x => x.PRO_ID == saidaProduto.SPRO_IDPRODUTO && x.PRO_ISDELETED == false).FirstOrDefaultAsync();
+                    produto.PRO_QUANTIDADE += saidaProduto.SPRO_QUANTIDADE;
+                    await _repPro.Salvar(produto);
+
+                    _context.SaidaProduto.Remove(saidaProduto);
+                    await _context.SaveChangesAsync();
+                    
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["PRO_IDCATEGORIA"] = new SelectList(_context.Categoria, "CAT_ID", "CAT_NOME", produto.PRO_IDCATEGORIA);
-            return View(produto);
-        }
 
-        // GET: SaidaProdutos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
+                return PartialView("ListaSaidaProdutosPartial", await _context.SaidaProduto.Include(x => x.Produto).Include(x => x.Categoria).Where(x => x.SPRO_ISDELETED == false).ToListAsync());
+            }
+            catch (Exception ex)
             {
-                return NotFound();
+                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                return Json(ex.Message);
             }
-
-            var produto = await _context.Produto
-                .Include(p => p.Categoria)
-                .FirstOrDefaultAsync(m => m.PRO_ID == id);
-            if (produto == null)
-            {
-                return NotFound();
-            }
-
-            return View(produto);
-        }
-
-        // POST: SaidaProdutos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var produto = await _context.Produto.FindAsync(id);
-            _context.Produto.Remove(produto);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ProdutoExists(int id)
-        {
-            return _context.Produto.Any(e => e.PRO_ID == id);
         }
 
         public async Task<decimal> TotalSaidaProdutos()

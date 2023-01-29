@@ -93,6 +93,7 @@ namespace Controle_Estoque_Basico.Controllers
 
             return PartialView("ListaProdutosPartial", lista);
         }
+       
 
         #endregion
 
@@ -112,7 +113,7 @@ namespace Controle_Estoque_Basico.Controllers
                         model.Produto.ImagemProdutoModel = "sem_foto.png";
                     else
                         model.Produto.ImagemProdutoModel = uniqueFileName;
-
+                   
                     _context.Add(model.Produto);
                     await _context.SaveChangesAsync();
 
@@ -137,12 +138,15 @@ namespace Controle_Estoque_Basico.Controllers
             try
             {
                 string uniqueFileName = UploadedFile(model);
+                var produto = await _context.Produto.AsNoTracking().FirstOrDefaultAsync(x=>x.PRO_ID == model.Produto.PRO_ID);
 
-                if (string.IsNullOrEmpty(uniqueFileName))
-                    model.Produto.ImagemProdutoModel = "sem_foto.png";
-                else
+
+                if (uniqueFileName == null)
+                    model.Produto.ImagemProdutoModel = produto.ImagemProdutoModel;
+                else                
                     model.Produto.ImagemProdutoModel = uniqueFileName;
-
+                
+               
                 _context.Update(model.Produto);
                 await _context.SaveChangesAsync();
 
@@ -205,6 +209,11 @@ namespace Controle_Estoque_Basico.Controllers
         public async Task<int> TotalProdutosEmEstoque()
         {
             return await _context.Produto.Where(x => x.PRO_ISDELETED == false).CountAsync();
+        }
+
+        public async Task<int> TotalProdutosComEstoqueBaixo()
+        {
+            return await _context.Produto.Where(x => x.PRO_ISDELETED == false && x.PRO_QUANTIDADE <= x.PRO_ESTOQUEMINIMO).CountAsync();
         }
 
         public async Task<IActionResult> InformarBaixaProduto(int _id, decimal _qtd)

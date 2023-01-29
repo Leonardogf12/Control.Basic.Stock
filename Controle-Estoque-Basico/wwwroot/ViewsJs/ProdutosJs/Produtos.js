@@ -1,7 +1,7 @@
 ﻿
 $(document).ready(function () {
 
-    CriaDataTableProdutos();
+    CriaDataTableProdutos();   
 });
 
 function CriaDataTableProdutos() {
@@ -49,6 +49,9 @@ function CriaDataTableProdutos() {
         },        
     }).buttons().container().appendTo('#dtProdutos_wrapper .col-md-6:eq(0)');
 }
+
+
+
 
 $('#mycheck').on('ifClicked', function (event) { checkAll(); });
 
@@ -280,20 +283,10 @@ function InformarVenda(registro) {
 
             ToastCustom(1, "success", "Produto excluido com sucesso");
 
-            //2nd empty html
-            //$("#dtProdutos" + " tbody").empty();
-            //$("#dtProdutos" + " thead").empty();
-
-
-
-            //var table = $("#dtProdutos").DataTable();
-
+           
             $("#listaProdutosRegistros").html('');
             $("#listaProdutosRegistros").html(data);
-            //CriaDataTableProdutos();
-
-
-            //document.location.reload(true);
+           
         },
         error: function (data) {
 

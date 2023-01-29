@@ -72,8 +72,87 @@ function checkAll() {
     }
 }
 
-function ExcluirSaidaProdutosPartial(id) {
-    ExcluirVarios(id);
+function DesfazerSaidaProdutoPartial(id) {
+    Swal.fire({
+        icon: 'question',
+        title: '<h3>Desfazer</h3>',
+        text: 'Deseja realmente desfazer esta venda?',
+        showCancelButton: true,
+        confirmButtonColor: '#36c6d3',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Confirmar',
+        footer: '<p>Obs: A quantidade retornará ao produto de origem.</label>'
+    }).then(function (result) {
+        if (result.value) {
+
+            var url = "/SaidaProdutos/DesfazerVenda/";
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                datatype: 'JSON',
+                data: { _registros: id },
+                beforeSend: function () {
+                },
+                success: function (data) {
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: '<h3>Sucesso</h3>',
+                        text: 'A quantidade retornou ao produto de origem.',
+                        showConfirmButton: false,
+                        timer: 2500
+                    }).then(function () {
+
+                        $('#dtSaidaProdutos').DataTable().clear().destroy();
+
+                        $("#listaSaidaProdutosRegistros").html('');
+                        $("#listaSaidaProdutosRegistros").html(data);
+
+                        CriaDataTableSaidaProdutos();
+
+                    });
+                },
+                error: function (data) {
+
+                    swal.fire({
+                        icon: 'error',
+                        title: "<h3>Excluir</h3>",
+                        text: data.responseJSON,
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: 'Fechar',
+                        footer: '<a href="Produtos/Index">Lista de Produtos</label>'
+                    });
+
+                    //ToastCustom(1, "error", data.responseText);
+                }
+            });
+        }
+
+    });
+}
+
+function ExcluirSaidaProdutoPartial(id) {
+    Swal.fire({
+        icon: 'question',
+        title: '<h3>Excluir</h3>',
+        text: 'Deseja realmente excluir este(s) registro(s)?',
+        showCancelButton: true,
+        confirmButtonColor: '#36c6d3',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Confirmar',
+        footer: '<p>Obs: Não será possível recuperar um registro excluído.</label>'
+    }).then(function (result) {
+        if (result.value) {
+
+            ExcluirVarios(id);
+        }
+
+    });
 }
 
 function ExcluirSaidaProdutosIndex() {
@@ -107,15 +186,37 @@ function ExcluirVarios(registro) {
         },
         success: function (data) {
 
-            ToastCustom(1, "success", "Produto excluido com sucesso");
+            Swal.fire({
+                icon: 'success',
+                title: '<h3>Sucesso</h3>',
+                text: 'Registro excluído com sucesso.',
+                showConfirmButton: false,
+                timer: 2000
+            }).then(function () {
 
-            $("#listaSaidaProdutosRegistros").html('');
-            $("#listaSaidaProdutosRegistros").html(data);
-            
+                $('#dtSaidaProdutos').DataTable().clear().destroy();
+
+                $("#listaSaidaProdutosRegistros").html('');
+                $("#listaSaidaProdutosRegistros").html(data);
+
+                CriaDataTableSaidaProdutos();
+
+            });
         },
         error: function (data) {
 
-            ToastCustom(1, "error", data.responseText);
+            swal.fire({
+                icon: 'error',
+                title: "<h3>Excluir</h3>",
+                text: data.responseJSON,
+                showCancelButton: true,
+                showConfirmButton: false,
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Fechar',
+                footer: '<a href="Produtos/Index">Lista de Produtos</label>'
+            });
+
+            //ToastCustom(1, "error", data.responseText);
         }
     });
 }

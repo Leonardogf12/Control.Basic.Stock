@@ -54,8 +54,9 @@
                 </td>                               
                 <td>
                     @*<a asp-action="Edit" asp-route-id="@item.SPRO_ID">  <i class="fas fa-edit"></i></a> &nbsp;*@
-                    <a asp-action="Details" asp-route-id="@item.SPRO_ID"><i class="fas fa-search"></i></a> &nbsp;
-                    @*<a class="btn-md" onclick="ExcluirProdutosPartial(@item.SPRO_ID)"> <i class="fas fa-trash"></i></a>                  *@
+                    <a title="Detalhes" asp-action="Details" asp-route-id="@item.SPRO_ID"><i class="fas fa-search"></i></a> &nbsp;
+                    <a title="Desfazer Venda" class="btn-md" onclick="DesfazerSaidaProdutoPartial(@item.SPRO_ID)"> <i class="fas fa-retweet"></i></a>  &nbsp;                 
+                    <a title="Excluir Venda" class="btn-md" onclick="ExcluirSaidaProdutoPartial(@item.SPRO_ID)"> <i class="fas fa-trash"></i></a>                  
                 </td>
             </tr>
         }

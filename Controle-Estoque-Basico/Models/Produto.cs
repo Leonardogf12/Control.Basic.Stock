@@ -32,7 +32,12 @@ namespace Controle_Estoque_Basico.Models
         public DateTime PRO_VALIDADE { get; set; }
 
         [Display(Name = "Status")]
-        public bool PRO_STATUS { get; set; } // true = VENDIDO, false = EM ESTOQUE
+        public bool PRO_STATUS { get; set; }
+
+        [Display(Name = "Estoque Mínimo")]
+        [Column(TypeName = "decimal(18, 3)")]
+        [Required(ErrorMessage = "O campo Estoque Mínimo é obrigatório.")]
+        public decimal PRO_ESTOQUEMINIMO { get; set; }
 
         public int PRO_IDCATEGORIA { get; set; }
 
@@ -44,6 +49,8 @@ namespace Controle_Estoque_Basico.Models
 
 
         [ForeignKey("PRO_IDCATEGORIA")]
-        public virtual Categoria Categoria { get; set; }       
+        public virtual Categoria Categoria { get; set; }
+        
+       
     }
 }

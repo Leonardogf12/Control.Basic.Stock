@@ -48,14 +48,17 @@ namespace Controle_Estoque_Basico.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ImagemProdutoModel")
-                        .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("PRO_DATAENTRADA")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("PRO_DESCRICAO")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
+                        .HasMaxLength(200);
+
+                    b.Property<decimal>("PRO_ESTOQUEMINIMO")
+                        .HasColumnType("decimal(18, 3)");
 
                     b.Property<int>("PRO_IDCATEGORIA")
                         .HasColumnType("int");
