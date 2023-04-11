@@ -214,7 +214,7 @@ function CarregaDadosGraficoDeLinhas(meses, valores) {
                 pointStrokeColor: 'rgba(60,141,188,1)',
                 pointHighlightFill: '#fff',
                 pointHighlightStroke: 'rgba(60,141,188,1)',
-                data: valores //*DADOS
+                data: valores //*DADOS 
             }
         ]
     }
@@ -396,6 +396,25 @@ function ConverteStringToDate(texto) {
     const [ano, mes, dia] = texto.split('-');
     
     return [dia, mes, ano].join('/');  
+}
+
+function EmailTeste() {
+
+    $.ajax({
+        url: '/Home/TesteEmail/',
+        type: 'POST',
+        datatype: 'JSON',
+        beforeSend: function () {
+        },
+        success: function (data) {
+            alert("email enviado - TEORICAMENTE");
+        },
+        error: function (data) {
+
+            alert("erro ao enviar email.");
+        }
+    });
+
 }
 
 

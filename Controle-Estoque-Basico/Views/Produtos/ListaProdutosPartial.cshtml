@@ -55,10 +55,10 @@
                     </div>
                 </td>
                 <td>
-                    <img src="~/Imagens/@item.ImagemProdutoModel"
-                     class="rounded-circle"
-                     height="40" width="40"
-                     asp-append-version="true" />
+                    <img src="~/Imagens/Produtos/@item.ImagemProdutoModel"
+                         class="rounded-circle"
+                         height="40" width="40"
+                         asp-append-version="true" />
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Categoria.CAT_NOME)
@@ -97,18 +97,41 @@
 
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.PRO_ID" title="Editar"><i class="fas fa-edit"></i></a> &nbsp;
-                    <a asp-action="Details" asp-route-id="@item.PRO_ID" title="Detalhes"><i class="fa fa-search"></i></a> &nbsp;
-                    <a title="Excluir" class="btn-md" onclick="ExcluirProdutosPartial(@item.PRO_ID)"> <i class="fas fa-trash" style="cursor:pointer;"></i></a> &nbsp;
+                    <div>
+                        <i type="button" class="fas fa-bars" data-toggle="dropdown"></i>
+                        <ul class="dropdown-menu">
+                            <li><a asp-action="edit" asp-route-id="@item.PRO_ID" title="editar">&nbsp;&nbsp;&nbsp;Editar</a></li>
+                            <li><a asp-action="details" asp-route-id="@item.PRO_ID" title="detalhes">&nbsp;&nbsp;&nbsp;Detalhes</a></li>
+                            <li><a title="excluir" class="btn-md" style="cursor:pointer;" onclick="ExcluirProdutosPartial(@item.PRO_ID)">&nbsp;&nbsp;&nbsp;Excluir</a></li>
 
-                    @if (item.PRO_QUANTIDADE > 0)
-                    {
-                        <a title="Baixar Estoque" class="btn-md" onclick="ShowSwalBaixaProdutos(@item.PRO_ID)"><i class="fa fa-minus-circle" style="cursor: pointer;"></i></a>
-                    }
-                    else
-                    {
-                        <a title="Baixar Estoque" class="btn-md"><i class="fa fa-minus-circle" style="color:grey;"></i></a>
-                    }
+                            @if (item.PRO_QUANTIDADE > 0)
+                            {
+                                <li>
+                                    <a title="baixar estoque" style="cursor:pointer;" class="btn-md" onclick="ShowSwalBaixaProdutos(@item.PRO_ID)">&nbsp;&nbsp;&nbsp;Baixar Estoque</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a title="baixar estoque" class="btn-md" style="color:grey;">&nbsp;&nbsp;&nbsp;Baixar Estoque</a>
+                                </li>
+                            }
+
+                        </ul>
+                    </div>
+
+                    @*<a asp-action="edit" asp-route-id="@item.PRO_ID" title="editar"><i class="fas fa-edit"></i></a> &nbsp;
+                        <a asp-action="details" asp-route-id="@item.PRO_ID" title="detalhes"><i class="fa fa-search"></i></a> &nbsp;
+                        <a title="excluir" class="btn-md" onclick="ExcluirProdutosPartial(@item.PRO_ID)"> <i class="fas fa-trash" style="cursor:pointer;"></i></a> &nbsp;
+
+                        @if (item.PRO_QUANTIDADE > 0)
+                        {
+                            <a title="baixar estoque" class="btn-md" onclick="ShowSwalBaixaProdutos(@item.PRO_ID)"><i class="fa fa-minus-circle" style="cursor: pointer;"></i></a>
+                        }
+                        else
+                        {
+                            <a title="baixar estoque" class="btn-md"><i class="fa fa-minus-circle" style="color:grey;"></i></a>
+                        }*@
                 </td>
             </tr>
         }

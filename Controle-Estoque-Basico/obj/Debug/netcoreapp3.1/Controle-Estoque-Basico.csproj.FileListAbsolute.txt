@@ -882,3 +882,5 @@ D:\PROJETOS\Control.Basic.Stock\Controle-Estoque-Basico\obj\Debug\netcoreapp3.1\
 D:\PROJETOS\Control.Basic.Stock\Controle-Estoque-Basico\obj\Debug\netcoreapp3.1\Razor\Views\Produtos\ModalBaixaProdutos.cshtml.g.cs
 D:\PROJETOS\Control.Basic.Stock\Controle-Estoque-Basico\bin\Debug\netcoreapp3.1\wwwroot\ViewsJs\HomeJs\HomeJs.js
 D:\PROJETOS\Control.Basic.Stock\Controle-Estoque-Basico\bin\Debug\netcoreapp3.1\Views\SaidaProdutos\ListaSaidaProdutosPartial.cshtml
+D:\PROJETOS\Control.Basic.Stock\Controle-Estoque-Basico\obj\Debug\netcoreapp3.1\staticwebassets\Controle-Estoque-Basico.StaticWebAssets.xml
+D:\PROJETOS\Control.Basic.Stock\Controle-Estoque-Basico\obj\Debug\netcoreapp3.1\scopedcss\bundle\Controle-Estoque-Basico.styles.css

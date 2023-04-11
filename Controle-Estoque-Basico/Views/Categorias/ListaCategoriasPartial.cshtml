@@ -41,12 +41,17 @@
                     @Html.DisplayFor(modelItem => item.CAT_DESCRICAO)
                 </td>  
               
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.CAT_ID" title="Editar">  <i class="fas fa-edit"></i></a> &nbsp;
-                    @*<a asp-action="Details" asp-route-id="@item.CAT_ID" title="Detalhes"><i class="fas fa-search"></i></a> &nbsp;                  *@
-                    <a title="Excluir" class="btn-md" onclick="ExcluirCategoriasPartial(@item.CAT_ID)"> <i class="fas fa-trash" style="cursor: pointer;"></i></a>
-                   
-                </td>
+                 <td>
+                     <div>
+                         <i type="button" class="fas fa-bars" data-toggle="dropdown"></i>
+                         <ul class="dropdown-menu">
+                             <li><a asp-action="Edit" asp-route-id="@item.CAT_ID" title="Editar">&nbsp;&nbsp;&nbsp;Editar</a></li>
+                             <li><a title="Excluir" style="cursor: pointer;" class="btn-md" onclick="ExcluirCategoriasPartial(@item.CAT_ID)">&nbsp;&nbsp;&nbsp;Excluir</a></li>                           
+                         </ul>
+                     </div>
+                     @*<a asp-action="Edit" asp-route-id="@item.CAT_ID" title="Editar">  <i class="fas fa-edit"></i></a> &nbsp;                     
+                     <a title="Excluir" class="btn-md" onclick="ExcluirCategoriasPartial(@item.CAT_ID)"> <i class="fas fa-trash" style="cursor: pointer;"></i></a>*@
+                 </td>
             </tr>
         }
     </tbody>

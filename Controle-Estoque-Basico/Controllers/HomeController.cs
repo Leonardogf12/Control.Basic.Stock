@@ -13,6 +13,9 @@ using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Controle_Estoque_Basico.Controllers
@@ -137,7 +140,7 @@ namespace Controle_Estoque_Basico.Controllers
                 throw new Exception(ex.Message);
             }
 
-        }        
+        }
 
         public static IEnumerable<(string Month, int Year)> MesesIntervalo(DateTime startDate, DateTime endDate)
         {
@@ -164,6 +167,6 @@ namespace Controle_Estoque_Basico.Controllers
 
                 iterator = iterator.AddMonths(1);
             }
-        }
+        }       
     }
 }

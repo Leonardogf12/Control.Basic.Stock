@@ -213,7 +213,7 @@ namespace Controle_Estoque_Basico.Controllers
 
         public async Task<int> TotalProdutosComEstoqueBaixo()
         {
-            return await _context.Produto.Where(x => x.PRO_ISDELETED == false && x.PRO_QUANTIDADE <= x.PRO_ESTOQUEMINIMO).CountAsync();
+            return await _context.Produto.Where(x => x.PRO_ISDELETED == false && x.PRO_QUANTIDADE <= x.PRO_ESTOQUEMINIMO && x.PRO_QUANTIDADE > 0).CountAsync();
         }
 
         public async Task<IActionResult> InformarBaixaProduto(int _id, decimal _qtd)
@@ -262,9 +262,10 @@ namespace Controle_Estoque_Basico.Controllers
             string uniqueFileName = null;
 
             if (model.ImagemProdutoViewModel != null)
-            {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Imagens");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImagemProdutoViewModel.FileName;
+            {                
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Imagens/Produtos");
+                //uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImagemProdutoViewModel.FileName; //GERA NOME UNICO PARA IMAGEM
+                uniqueFileName = model.ImagemProdutoViewModel.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
@@ -272,8 +273,7 @@ namespace Controle_Estoque_Basico.Controllers
                 }
             }
             return uniqueFileName;
-        }
-
+        }       
         #endregion
 
     }
